@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fold Fund — Savings Tracker</title>
+<title>Stashday</title>
+<meta name="application-name" content="Stashday">
+<meta name="apple-mobile-web-app-title" content="Stashday">
+<meta name="theme-color" content="#0f766e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -105,7 +108,7 @@ nav.tabs button.on{color:var(--accent)}
 <body>
 <div class="wrap">
   <header>
-    <h1>Fold Fund</h1>
+    <h1>Stashday</h1>
     <div class="status"><span class="dot" id="dot"></span><span id="status">Loading…</span></div>
   </header>
   <main id="view"><div class="loading">Loading…</div></main>
@@ -250,12 +253,12 @@ function save() {
 function boot() { const l = readLocal(); if (l) S = hydrate(l); loaded = true; setStatus('Saved on this device', 'ok'); render(); }
 function backup() {
   const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fold-fund-backup-' + todayISO() + '.json';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'stashday-backup-' + todayISO() + '.json';
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 function restore(file) {
   const r = new FileReader();
-  r.onload = () => { try { S = hydrate(JSON.parse(r.result)); save(); render(); toast('Backup restored'); } catch (e) { toast('That file isn’t a Fold Fund backup'); } };
+  r.onload = () => { try { S = hydrate(JSON.parse(r.result)); save(); render(); toast('Backup restored'); } catch (e) { toast('That file isn’t a Stashday backup'); } };
   r.readAsText(file);
 }
 
