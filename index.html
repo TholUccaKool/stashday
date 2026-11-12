@@ -42,47 +42,47 @@ header h1{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0}
 .between{justify-content:space-between}
 .bar{height:10px;background:var(--track);border-radius:99px;overflow:hidden;margin:12px 0 8px}
 .bar>i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
-.bar.thin{height:6px;margin:6px 0 0}
-.bar.over>i{background:var(--bad)} .bar.near>i{background:var(--warn)}
 .note{border-radius:12px;padding:10px 12px;font-size:14px;margin-top:12px}
 .note.ok{background:var(--accent-soft)} .note.warn{background:var(--warn-soft)} .note.bad{background:var(--bad-soft)}
-.note b{font-weight:700}
 .btn{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn.danger{color:var(--bad)}
-.btn.block{width:100%}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .btns .btn{flex:1}
 label.f{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 6px}
 input.in,select.in{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 12px;outline:none;min-width:0}
 input.in:focus,select.in:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .amount-in{font-size:30px;font-weight:800;letter-spacing:-.02em;text-align:center;padding:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:8px 12px;font-size:14px;font-weight:500;cursor:pointer}
-.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .list{margin:0;padding:0;list-style:none}
-.list li{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .list li:first-child{border-top:0}
-.emoji{width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.emoji{width:34px;height:34px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
 .grow{flex:1;min-width:0}
 .ttl{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .amt{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .amt.plus{color:var(--accent)}
 .x{border:0;background:transparent;color:var(--muted);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:8px}
 .x:hover{background:var(--bg)}
-.daylbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 2px}
-.catrow{display:grid;grid-template-columns:52px 1fr 100px 32px;gap:8px;align-items:center;margin-top:8px}
-.catrow input{padding:9px 10px}
-.catrow .em{text-align:center}
-.planrow{display:grid;grid-template-columns:1fr 92px 128px 32px;gap:8px;align-items:center;margin-top:8px}
+.itemrow{display:grid;grid-template-columns:48px 1fr 96px 30px;gap:8px;align-items:center;margin-top:8px}
+.itemrow input{padding:9px 10px}
+.itemrow .em{text-align:center}
+.planrow{display:grid;grid-template-columns:1fr 88px 124px 30px;gap:8px;align-items:center;margin-top:8px}
 .planrow input{padding:9px 10px}
 .sum{display:flex;justify-content:space-between;padding:6px 0;font-variant-numeric:tabular-nums}
-.sum.total{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;font-weight:700}
+.sum.total{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;font-weight:700;font-size:17px}
 .good{color:var(--accent)} .badc{color:var(--bad)}
+.eq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:end;gap:6px;text-align:center;margin-top:6px}
+.eq .op{font-size:20px;color:var(--muted);padding-bottom:16px}
+.eq .v{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.eq .l{font-size:12px;color:var(--muted)}
+.eq .save .v{color:var(--accent)}
+.monthnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.monthnav b{font-size:17px}
+.monthnav button{border:1px solid var(--line);background:var(--bg);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px}
 .tl{margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
 .tl .r{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-variant-numeric:tabular-nums;font-size:14px}
-.tl .r .lbl{display:flex;align-items:center;gap:8px}
+.tl .r .lbl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
 .pill.warn{background:var(--warn-soft);color:var(--warn)}
 .pill.muted{background:var(--bg);color:var(--muted)}
@@ -116,18 +116,19 @@ nav.tabs button.on{color:var(--accent)}
 
 <nav class="tabs"><div class="in" id="tabs">
   <button data-tab="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
-  <button data-tab="spend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Spend</button>
-  <button data-tab="money"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Savings</button>
-  <button data-tab="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Plan</button>
+  <button data-tab="month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Month</button>
+  <button data-tab="savings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Savings</button>
+  <button data-tab="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
 </div></nav>
 
 <div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* How it works: your savings = what you had when you started
-   + every paycheck you receive − everything you spend (+/- manual adjustments).
-   Whatever you don't spend is savings for the phone. */
+/* Stashday — how it works:
+   Each month: pay − what you plan to spend = what you send to savings.
+   Savings = starting money + every transfer you send + extra adds − anything you take out.
+   Everything is stored in this browser only (localStorage). */
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -137,46 +138,40 @@ const isoOf = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.g
 const todayISO = () => isoOf(new Date());
 const num = v => { const n = parseFloat(String(v).replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
 const sumOf = (arr, f) => arr.reduce((a, x) => a + f(x), 0);
+const r2 = n => Math.round(n * 100) / 100;
 
+const TEMPLATE = () => [
+  { id: 't1', emoji: '☕', name: 'Coffee', amount: 77.5 },
+  { id: 't2', emoji: '⛽', name: 'Gas', amount: 15 },
+  { id: 't3', emoji: '❤️', name: 'Date', amount: 60 },
+  { id: 't4', emoji: '📺', name: 'YouTube / Phone / Spotify', amount: 15 },
+  { id: 't5', emoji: '💈', name: 'Haircut / bike maintenance', amount: 7.5 }
+];
 const DEFAULT = () => ({
-  v: 2,
+  v: 3,
   currency: 'USD',
   payDay: 5,
   income: 700,
+  started: false,
   startBalance: 0,
+  startDate: null,
   goal: { name: 'Galaxy Z Fold 8', price: 0, targetMonth: '2027-01' },
-  categories: [
-    { id: 'coffee', emoji: '☕', name: 'Coffee', budget: 77.5 },
-    { id: 'gas', emoji: '⛽', name: 'Gas', budget: 15 },
-    { id: 'date', emoji: '❤️', name: 'Date', budget: 60 },
-    { id: 'subs', emoji: '📺', name: 'YouTube / Phone / Spotify', budget: 15 },
-    { id: 'care', emoji: '💈', name: 'Haircut / bike maintenance', budget: 7.5 },
-    { id: 'gym', emoji: '🏋️', name: 'Gym', budget: 0 },
-    { id: 'food', emoji: '🍜', name: 'Food & drinks', budget: 0 },
-    { id: 'family', emoji: '👵', name: 'Family', budget: 0 },
-    { id: 'laundry', emoji: '🧺', name: 'Laundry', budget: 0 },
-    { id: 'fun', emoji: '🎮', name: 'Fun', budget: 0 },
-    { id: 'other', emoji: '🧾', name: 'Other', budget: 0 }
-  ],
-  planned: [ { id: 'sr', name: 'Siem Reap marathon trip', amount: 300, month: '2026-12' } ],
-  cycles: {},     // 'YYYY-MM' -> { received, amount, receivedOn }
-  expenses: [],   // { id, date, t, cat, amount, note }
-  moves: []       // { id, date, t, type: 'add' | 'out', amount, note }
+  big: [ { id: 'sr', name: 'Siem Reap marathon trip', amount: 300, month: '2026-12' } ],
+  months: {},   // 'YYYY-MM' -> { pay, items:[{id,emoji,name,amount}], received }
+  moves: []     // { id, date, t, type: 'transfer'|'add'|'out', amount, note, month }
 });
 
 let S = DEFAULT();
-let loaded = false, tab = 'home', spendCycle = null;
-let draft = { amount: '', cat: 'coffee', note: '', date: null };
+let loaded = false, tab = 'home', viewMonth = null;
 
 function fmt(n) {
   n = n || 0;
   if (S.currency === 'KHR') return (n < 0 ? '−' : '') + Math.round(Math.abs(n)).toLocaleString('en') + ' ៛';
-  const a = Math.round(Math.abs(n) * 100) / 100;
-  const s = a.toLocaleString('en', { minimumFractionDigits: a % 1 ? 2 : 0, maximumFractionDigits: 2 });
-  return (n < 0 ? '−$' : '$') + s;
+  const a = r2(Math.abs(n));
+  return (n < 0 ? '−$' : '$') + a.toLocaleString('en', { minimumFractionDigits: a % 1 ? 2 : 0, maximumFractionDigits: 2 });
 }
 
-/* ---------- pay cycles: one cycle runs from one payday to the day before the next ---------- */
+/* ---------- months (a month runs from one payday to the next) ---------- */
 function cycleOf(d) { let [y, m, day] = d.split('-').map(Number); if (day < S.payDay) { m--; if (m < 1) { m = 12; y--; } } return y + '-' + pad(m); }
 function addMonths(k, n) { let [y, m] = k.split('-').map(Number); m += n; while (m > 12) { m -= 12; y++; } while (m < 1) { m += 12; y--; } return y + '-' + pad(m); }
 const monthsBetween = (a, b) => { const [ay, am] = a.split('-').map(Number), [by, bm] = b.split('-').map(Number); return (by - ay) * 12 + (bm - am); };
@@ -186,71 +181,74 @@ const shortDate = d => d.toLocaleDateString('en', { day: 'numeric', month: 'shor
 function niceDay(iso) {
   const [y, m, d] = iso.split('-').map(Number); const t = new Date(); const yd = new Date(); yd.setDate(yd.getDate() - 1);
   if (iso === isoOf(t)) return 'Today'; if (iso === isoOf(yd)) return 'Yesterday';
-  return new Date(y, m - 1, d).toLocaleDateString('en', { weekday: 'short', day: 'numeric', month: 'short' });
+  return new Date(y, m - 1, d).toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' });
 }
-const cat = id => S.categories.find(c => c.id === id) || { emoji: '🧾', name: 'Removed category' };
-const budgetTotal = () => sumOf(S.categories, c => c.budget || 0);
+const curMonth = () => cycleOf(todayISO());
 
-/* ---------- money math ---------- */
+/* The list for a month: its own if you've set one, else a copy of the latest earlier month (or the starter list). */
+function inheritedItems(k) {
+  const keys = Object.keys(S.months).filter(x => x <= k).sort();
+  const src = keys.length ? S.months[keys[keys.length - 1]].items : null;
+  return src ? src.map(i => ({ ...i })) : TEMPLATE();
+}
+function monthData(k) {
+  const m = S.months[k];
+  if (m) return { pay: m.pay ?? S.income, items: m.items, received: !!m.received, own: true };
+  return { pay: S.income, items: inheritedItems(k), received: false, own: false };
+}
+function ensureMonth(k) {
+  if (!S.months[k]) S.months[k] = { pay: S.income, items: inheritedItems(k), received: false };
+  return S.months[k];
+}
+const spendOf = k => sumOf(monthData(k).items, i => i.amount || 0);
+const saveOf = k => monthData(k).pay - spendOf(k);
+const sentIn = k => sumOf(S.moves.filter(m => m.type === 'transfer' && m.month === k), m => m.amount);
+const bigIn = k => sumOf(S.big.filter(b => b.month === k), b => b.amount || 0);
+
+/* ---------- savings ---------- */
 function balanceNow() {
-  const pay = sumOf(Object.values(S.cycles).filter(c => c.received), c => c.amount || 0);
-  const add = sumOf(S.moves.filter(m => m.type === 'add'), m => m.amount);
-  const out = sumOf(S.moves.filter(m => m.type === 'out'), m => m.amount);
-  const spent = sumOf(S.expenses.filter(e => e.date >= (S.startDate || '0000')), e => e.amount);
-  return S.startBalance + pay + add - out - spent;
+  return S.startBalance
+    + sumOf(S.moves.filter(m => m.type !== 'out'), m => m.amount)
+    - sumOf(S.moves.filter(m => m.type === 'out'), m => m.amount);
 }
-function cycleStats(k) {
-  const exps = S.expenses.filter(e => cycleOf(e.date) === k);
-  const byCat = {}; exps.forEach(e => byCat[e.cat] = (byCat[e.cat] || 0) + e.amount);
-  const c = S.cycles[k] || {};
-  return { exps, byCat, total: sumOf(exps, e => e.amount), received: !!c.received, income: c.received ? c.amount : S.income };
-}
-const plannedIn = k => sumOf(S.planned.filter(p => p.month === k), p => p.amount || 0);
-
-/* Projects your savings on each upcoming payday (right after pay lands),
-   assuming you spend your monthly budgets and the planned big expenses. */
+/* Savings on each upcoming payday, once that month's transfer is sent. */
 function projection() {
-  const price = S.goal.price || 0;
-  const cur = cycleOf(todayISO());
-  const st = cycleStats(cur);
-  const budgets = budgetTotal();
-  const inc = S.income || 0;
-  const rows = [];
-  let B = balanceNow(), reach = null;
-  const restOfCycle = Math.max(0, budgets - st.total);
-  if (!st.received) {
-    B += inc - plannedIn(cur);
-    rows.push({ k: cur, bal: B, pending: true });
-    if (price && B >= price) reach = cur;
-  } else {
-    B -= plannedIn(cur);
-  }
-  B -= restOfCycle;
-  const target = S.goal.targetMonth || null;
-  const horizon = Math.max(target ? monthsBetween(cur, target) : 0, 1);
-  for (let i = 1; i <= 36; i++) {
+  const price = S.goal.price || 0, cur = curMonth(), target = S.goal.targetMonth || null;
+  let B = balanceNow(), reach = null; const rows = [];
+  const horizon = Math.max(target ? monthsBetween(cur, target) : 0, 2);
+  for (let i = 0; i <= 36; i++) {
     const k = addMonths(cur, i);
-    B += inc - plannedIn(k);
-    rows.push({ k, bal: B });
+    const pending = Math.max(0, saveOf(k) - sentIn(k));
+    B += (i === 0 ? pending : saveOf(k)) - bigIn(k);
+    rows.push({ k, bal: B, late: i === 0 && !monthData(k).received, done: i === 0 && pending === 0 });
     if (price && !reach && B >= price) reach = k;
     if (i >= horizon && (reach || !price)) break;
-    B -= budgets;
   }
-  const perMonth = inc - budgets;
-  const tRow = target ? rows.find(r => r.k === target) : null;
-  return { rows, reach, perMonth, target, tRow, cur, st };
+  return { rows, reach, target, tRow: target ? rows.find(r => r.k === target) : null };
 }
 
-/* ---------- storage: this device only (browser localStorage) ---------- */
-const LKEY = 'foldfund.v2';
+/* ---------- storage: this device only ---------- */
+const LKEY = 'stashday.v3';
 function setStatus(t, kind) { $('#status').textContent = t; $('#dot').className = 'dot ' + (kind || ''); }
-function readLocal() { try { const r = localStorage.getItem(LKEY); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
 function hydrate(o) { const s = Object.assign(DEFAULT(), o || {}); s.goal = Object.assign(DEFAULT().goal, (o && o.goal) || {}); return s; }
-function save() {
-  try { localStorage.setItem(LKEY, JSON.stringify(S)); setStatus('Saved on this device', 'ok'); }
-  catch (e) { setStatus('Can’t save here — use Back up', 'warn'); }
+function save() { try { localStorage.setItem(LKEY, JSON.stringify(S)); setStatus('Saved on this device', 'ok'); } catch (e) { setStatus('Can’t save here — use Back up', 'warn'); } }
+function boot() {
+  try {
+    const raw = localStorage.getItem(LKEY);
+    if (raw) S = hydrate(JSON.parse(raw));
+    else {
+      // carry over the few things worth keeping from the earlier version
+      const old = JSON.parse(localStorage.getItem('foldfund.v2') || 'null');
+      if (old) {
+        Object.assign(S, { currency: old.currency || 'USD', payDay: old.payDay || 5, income: old.income || 700, started: !!old.started, startBalance: old.startBalance || 0, startDate: old.startDate || null });
+        if (old.goal) S.goal = Object.assign(S.goal, old.goal);
+        if (Array.isArray(old.planned)) S.big = old.planned.map(p => ({ id: p.id, name: p.name, amount: p.amount, month: p.month }));
+        save();
+      }
+    }
+  } catch (e) {}
+  loaded = true; setStatus('Saved on this device', 'ok'); render();
 }
-function boot() { const l = readLocal(); if (l) S = hydrate(l); loaded = true; setStatus('Saved on this device', 'ok'); render(); }
 function backup() {
   const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'stashday-backup-' + todayISO() + '.json';
@@ -258,289 +256,246 @@ function backup() {
 }
 function restore(file) {
   const r = new FileReader();
-  r.onload = () => { try { S = hydrate(JSON.parse(r.result)); save(); render(); toast('Backup restored'); } catch (e) { toast('That file isn’t a Stashday backup'); } };
+  r.onload = () => { try { const o = JSON.parse(r.result); if (!o || o.v !== 3) throw 0; S = hydrate(o); save(); render(); toast('Backup restored'); } catch (e) { toast('That file isn’t a Stashday backup'); } };
   r.readAsText(file);
 }
 
 /* ---------- UI helpers ---------- */
 function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 1800); }
-function openSheet(html) { $('#sheet').innerHTML = html; $('#overlay').classList.add('open'); const f = $('#sheet input.in'); if (f) setTimeout(() => f.focus(), 60); }
+function openSheet(html) { $('#sheet').innerHTML = html; $('#overlay').classList.add('open'); const f = $('#sheet input.in'); if (f) setTimeout(() => { f.focus(); f.select && f.select(); }, 60); }
 function closeSheet() { $('#overlay').classList.remove('open'); }
 $('#overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closeSheet(); });
 const phoneSVG = `<svg width="46" height="56" viewBox="0 0 46 56" fill="none"><rect x="2" y="2" width="42" height="52" rx="7" stroke="currentColor" stroke-width="2.5"/><path d="M23 4v48" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" opacity=".5"/><circle cx="34" cy="10" r="2" fill="currentColor" opacity=".7"/></svg>`;
+const eqHTML = (pay, spend, save) => `<div class="eq"><div><div class="v">${fmt(pay)}</div><div class="l">pay</div></div><div class="op">−</div><div><div class="v">${fmt(spend)}</div><div class="l">to spend</div></div><div class="op">=</div><div class="save"><div class="v ${save < 0 ? 'badc' : ''}">${fmt(save)}</div><div class="l">to savings</div></div></div>`;
 
 /* ---------- views ---------- */
 function vHome() {
-  const bal = balanceNow();
-  const price = S.goal.price || 0;
-  const p = projection();
-  const { cur, st } = p;
+  const bal = balanceNow(), price = S.goal.price || 0, p = projection(), cur = curMonth(), md = monthData(cur);
   const pct = price ? Math.min(100, Math.max(0, bal / price * 100)) : 0;
   let h = '';
 
   if (!S.started) {
-    h += `<section class="card"><h2>First step</h2><div>How much money do you have saved <b>right now</b> (after the spending you’ve already done while waiting for pay)?</div>
+    h += `<section class="card"><h2>First step</h2><div>How much is in your <b>savings account</b> right now?</div>
       <input class="in amount-in" id="start-amt" inputmode="decimal" placeholder="$0" style="margin-top:12px">
-      <div class="btns"><button class="btn primary" data-act="setStart">Start tracking</button></div></section>`;
+      <div class="btns"><button class="btn primary" data-act="setStart">Start</button></div></section>`;
   }
 
+  // goal
   h += `<section class="card"><div class="phone" style="color:var(--accent)">${phoneSVG}<div class="grow"><h2 style="margin:0 0 2px">Saving for</h2><div class="mid" style="color:var(--ink)">${esc(S.goal.name || 'My goal')}</div></div></div>`;
-  h += `<div style="margin-top:14px" class="row between"><div><div class="big">${fmt(bal)}</div><div class="muted small">saved right now${price ? ' of ' + fmt(price) : ''}</div></div>${price ? `<div style="text-align:right"><div class="mid">${Math.round(pct)}%</div><div class="muted small">${bal >= price ? 'enough!' : fmt(price - bal) + ' to go'}</div></div>` : ''}</div>`;
+  h += `<div style="margin-top:14px" class="row between"><div><div class="big">${fmt(bal)}</div><div class="muted small">in savings${price ? ' of ' + fmt(price) : ''}</div></div>${price ? `<div style="text-align:right"><div class="mid">${Math.round(pct)}%</div><div class="muted small">${bal >= price ? 'enough!' : fmt(price - bal) + ' to go'}</div></div>` : ''}</div>`;
   if (price) h += `<div class="bar"><i style="width:${pct}%"></i></div>`;
-
-  if (!price) h += `<div class="note warn">Add the phone’s price in <b>Plan</b> to see which paycheck gets you there.</div>`;
+  if (!price) h += `<div class="note warn">Add the phone’s price in <b>Settings</b> to see which payday gets you there.</div>`;
   else if (bal >= price) h += `<div class="note ok">🎉 <b>You have enough for the ${esc(S.goal.name)}.</b></div>`;
-  else if (p.reach) h += `<div class="note ok">You’ll have enough on your <b>${monthName(p.reach)} paycheck</b> (${shortDate(payDate(p.reach))}${p.reach === cur && !st.received ? ', when it arrives' : ''}).</div>`;
-  else if (p.perMonth <= 0) h += `<div class="note bad">Your budgets use your whole paycheck, so savings won’t grow. Trim a budget in Plan.</div>`;
-  else h += `<div class="note warn">Not within the next 3 years at this rate.</div>`;
-
+  else if (p.reach) h += `<div class="note ok">You’ll have enough after your <b>${monthName(p.reach)}</b> payday (${shortDate(payDate(p.reach))}).</div>`;
+  else h += `<div class="note warn">Not within 3 years at this rate. Try trimming what you plan to spend.</div>`;
   if (price && p.tRow && bal < price) {
     const diff = p.tRow.bal - price;
-    h += `<div class="note ${diff >= 0 ? 'ok' : 'warn'}">Your target is the <b>${monthName(p.target)}</b> paycheck: you’ll have about <b>${fmt(p.tRow.bal)}</b>, so ${diff >= 0 ? `<b>${fmt(diff)} to spare</b> ✓` : `<b>${fmt(-diff)} short</b>. Spend about ${fmt(-diff / Math.max(1, monthsBetween(cur, p.target)))} less a month to make it.`}</div>`;
+    const months = Math.max(1, p.rows.findIndex(r => r.k === p.target) + 1);
+    h += `<div class="note ${diff >= 0 ? 'ok' : 'warn'}">By your <b>${monthName(p.target)}</b> payday you’ll have about <b>${fmt(p.tRow.bal)}</b> — ${diff >= 0 ? `<b>${fmt(diff)} to spare</b> ✓` : `<b>${fmt(-diff)} short</b>. Plan to spend about ${fmt(-diff / months)} less a month to make it.`}</div>`;
   }
+  h += `<div class="tl"><div class="small muted" style="margin:4px 0">Savings after each payday’s transfer</div>`;
+  p.rows.slice(0, 8).forEach(r => {
+    const tags = [];
+    if (r.late) tags.push(`<span class="pill warn">pay late</span>`);
+    if (r.done) tags.push(`<span class="pill">sent ✓</span>`);
+    if (bigIn(r.k)) tags.push(`<span class="pill muted">−${fmt(bigIn(r.k))} trip/plan</span>`);
+    if (price && r.bal >= price) tags.push(`<span class="pill">enough</span>`);
+    const d = payDate(r.k);
+    h += `<div class="r"><span class="lbl">${shortDate(d)}${d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : ''} ${tags.join('')}</span><b>${fmt(r.bal)}</b></div>`;
+  });
+  h += `</div></section>`;
 
-  // timeline
-  if (p.rows.length) {
-    h += `<div class="tl"><div class="small muted" style="margin:4px 0">Savings on each payday (if you stick to your budgets)</div>`;
-    p.rows.slice(0, 8).forEach(r => {
-      const tags = [];
-      if (r.pending) tags.push(`<span class="pill warn">late</span>`);
-      if (plannedIn(r.k)) tags.push(`<span class="pill muted">−${fmt(plannedIn(r.k))} planned</span>`);
-      if (price && r.bal >= price) tags.push(`<span class="pill">✓ enough</span>`);
-      h += `<div class="r"><span class="lbl">${shortDate(payDate(r.k))} ${payDate(r.k).getFullYear() !== new Date().getFullYear() ? payDate(r.k).getFullYear() : ''} ${tags.join('')}</span><b>${fmt(r.bal)}</b></div>`;
-    });
-    h += `</div>`;
-  }
-  h += `</section>`;
-
-  // paycheck
+  // this month
+  const spend = spendOf(cur), toSave = md.pay - spend, sent = sentIn(cur), left = r2(toSave - sent);
   const due = payDate(cur);
   const late = Math.floor((new Date().setHours(0, 0, 0, 0) - due.getTime()) / 86400000);
-  const budgets = budgetTotal();
-  h += `<section class="card"><h2>${monthName(cur, { month: 'long' })} paycheck</h2>`;
-  if (!st.received) {
-    h += `<div class="mid">Waiting for pay</div><div class="muted small">Due ${shortDate(due)}${late > 0 ? ` · <span class="badc">${late} day${late > 1 ? 's' : ''} late</span>` : ''}</div>`;
-    h += `<div class="note warn">You’ve spent <b>${fmt(st.total)}</b> since ${shortDate(due)}. It’s already taken out of your savings above, so you don’t have to work it out yourself.</div>`;
-    h += `<div class="btns"><button class="btn primary" data-act="payArrived">My pay arrived</button></div>`;
+  h += `<section class="card"><div class="row between"><h2 style="margin:0">${monthName(cur, { month: 'long' })}</h2><button class="btn" style="padding:6px 10px;font-size:13px" data-go="month">Edit list</button></div>`;
+  h += eqHTML(md.pay, spend, toSave);
+  if (!md.received) {
+    h += `<div class="note warn">Waiting for pay — due ${shortDate(due)}${late > 0 ? `, <b>${late} day${late > 1 ? 's' : ''} late</b>` : ''}. If you dip into savings meanwhile, record it under <b>Savings → Take out</b>.</div>`;
+    h += `<div class="btns"><button class="btn primary" data-act="payArrived">Pay arrived</button></div>`;
+  } else if (left > 0) {
+    h += `<div class="note ok">Pay received. Send <b>${fmt(left)}</b> to your savings account${sent > 0 ? ` (already sent ${fmt(sent)})` : ''}.</div>`;
+    h += `<div class="btns"><button class="btn primary" data-act="sent" data-amt="${left}">I sent ${fmt(left)} to savings</button></div>`;
   } else {
-    const left = budgets - st.total;
-    h += `<div class="row between"><div><div class="mid ${left < 0 ? 'badc' : ''}">${fmt(Math.abs(left))}</div><div class="muted small">${left >= 0 ? 'left in this month’s budgets' : 'over this month’s budgets'}</div></div><div style="text-align:right"><div class="mid">${fmt(st.income)}</div><div class="muted small">received ${shortDate(due)}</div></div></div>`;
-    h += `<div class="bar ${left < 0 ? 'over' : (budgets && st.total / budgets > .8 ? 'near' : '')}"><i style="width:${budgets ? Math.min(100, st.total / budgets * 100) : 0}%"></i></div>`;
+    h += `<div class="note ok">✓ Done for ${monthName(cur, { month: 'long' })} — ${fmt(sent)} sent to savings. Your spending account covers the rest.</div>`;
   }
   h += `</section>`;
-
-  // categories
-  h += `<section class="card"><div class="row between"><h2 style="margin:0">Spent this paycheck</h2><span class="small"><b>${fmt(st.total)}</b> <span class="muted">/ ${fmt(budgets)}</span></span></div><ul class="list" style="margin-top:6px">`;
-  S.categories.forEach(c => {
-    const spent = st.byCat[c.id] || 0, b = c.budget || 0;
-    if (!b && !spent) return;
-    const r = b ? spent / b : 0;
-    const cls = b ? (r > 1 ? 'over' : r > .8 ? 'near' : '') : '';
-    h += `<li><div class="emoji">${esc(c.emoji)}</div><div class="grow"><div class="row between"><span class="ttl">${esc(c.name)}</span><span class="amt small">${fmt(spent)}${b ? `<span class="muted"> / ${fmt(b)}</span>` : `<span class="muted"> extra</span>`}</span></div>${b ? `<div class="bar thin ${cls}"><i style="width:${Math.min(100, r * 100)}%"></i></div>` : ''}</div></li>`;
-  });
-  h += `</ul><div class="btns"><button class="btn primary" data-go="spend">+ Log spending</button></div></section>`;
   return h;
 }
 
-function vSpend() {
-  if (!S.categories.some(c => c.id === draft.cat)) draft.cat = S.categories[0] && S.categories[0].id;
-  if (!draft.date) draft.date = todayISO();
-  let h = `<section class="card"><h2>Log spending</h2>`;
-  h += `<input class="in amount-in" id="d-amt" inputmode="decimal" placeholder="${S.currency === 'KHR' ? '0 ៛' : '$0'}" value="${esc(draft.amount)}">`;
-  h += `<label class="f">Category</label><div class="chips">${S.categories.map(c => `<button class="chip ${draft.cat === c.id ? 'on' : ''}" data-chip="${esc(c.id)}">${esc(c.emoji)} ${esc(c.name)}</button>`).join('')}</div>`;
-  h += `<div class="row" style="gap:8px;align-items:flex-end"><div class="grow"><label class="f">Note (optional)</label><input class="in" id="d-note" placeholder="e.g. kuy teav" value="${esc(draft.note)}"></div><div style="width:150px"><label class="f">Date</label><input class="in" type="date" id="d-date" value="${esc(draft.date)}"></div></div>`;
-  h += `<div class="btns"><button class="btn primary block" data-act="addExpense">Add</button></div></section>`;
-
-  const cur = cycleOf(todayISO());
-  const keys = new Set([cur]); S.expenses.forEach(e => keys.add(cycleOf(e.date)));
-  const sorted = [...keys].sort().reverse();
-  if (!spendCycle || !keys.has(spendCycle)) spendCycle = cur;
-  const st = cycleStats(spendCycle);
-  h += `<section class="card"><div class="row between"><h2 style="margin:0">History</h2><select class="in" id="cyc" style="width:auto;padding:7px 10px">${sorted.map(k => `<option value="${k}" ${k === spendCycle ? 'selected' : ''}>${monthName(k)} pay</option>`).join('')}</select></div>`;
-  const inBudget = sumOf(st.exps.filter(e => (cat(e.cat).budget || 0) > 0), e => e.amount);
-  h += `<div class="sum" style="margin-top:10px"><span class="muted">Budgeted things</span><span>${fmt(inBudget)}</span></div><div class="sum"><span class="muted">Extras</span><span>${fmt(st.total - inBudget)}</span></div><div class="sum total"><span>Total spent</span><span>${fmt(st.total)}</span></div>`;
-  const exps = [...st.exps].sort((a, b) => b.date.localeCompare(a.date) || (b.t || 0) - (a.t || 0));
-  if (!exps.length) h += `<div class="empty">Nothing logged for this paycheck yet.</div>`;
-  let last = '';
-  exps.forEach(e => {
-    if (e.date !== last) { if (last) h += `</ul>`; h += `<div class="daylbl">${niceDay(e.date)}</div><ul class="list">`; last = e.date; }
-    const c = cat(e.cat);
-    h += `<li><div class="emoji">${esc(c.emoji)}</div><div class="grow"><div class="ttl">${esc(e.note || c.name)}</div>${e.note ? `<div class="small muted ttl">${esc(c.name)}</div>` : ''}</div><span class="amt">${fmt(e.amount)}</span><button class="x" title="Delete" data-del-exp="${e.id}">×</button></li>`;
-  });
-  if (last) h += `</ul>`;
+function vMonth() {
+  const cur = curMonth();
+  if (!viewMonth) viewMonth = cur;
+  const k = viewMonth, md = monthData(k), spend = spendOf(k);
+  let h = `<section class="card"><div class="monthnav"><button data-nav="-1" aria-label="Previous month">‹</button><b>${monthName(k)}</b><button data-nav="1" aria-label="Next month">›</button></div>`;
+  if (k !== cur) h += `<div class="small muted" style="text-align:center">${k < cur ? 'Past month' : 'Future month'} · <a href="#" data-act="today" style="color:var(--accent)">back to this month</a></div>`;
+  h += eqHTML(md.pay, spend, md.pay - spend);
+  h += `<label class="f">Pay this month</label><input class="in" inputmode="decimal" data-mpay="${k}" value="${md.pay || ''}" placeholder="${S.income}">`;
   h += `</section>`;
+
+  h += `<section class="card"><h2>Things I’ll spend on</h2>`;
+  if (!md.own) h += `<div class="small muted">Copied from ${Object.keys(S.months).some(x => x < k) ? 'last month' : 'your starter list'}. Changing anything saves it for this month.</div>`;
+  md.items.forEach(i => {
+    h += `<div class="itemrow"><input class="in em" maxlength="4" data-item="${i.id}" data-k="emoji" value="${esc(i.emoji)}"><input class="in" data-item="${i.id}" data-k="name" value="${esc(i.name)}" placeholder="What for"><input class="in" inputmode="decimal" data-item="${i.id}" data-k="amount" value="${i.amount || ''}" placeholder="0"><button class="x" title="Remove" data-del-item="${i.id}">×</button></div>`;
+  });
+  if (!md.items.length) h += `<div class="empty">Nothing on the list.</div>`;
+  h += `<div class="btns"><button class="btn" data-act="addItem">+ Add item</button></div>`;
+  h += `<div id="msum" style="margin-top:14px">${monthSumHTML(k)}</div></section>`;
+  h += `<div class="small muted" style="padding:0 4px">Tip: next month starts as a copy of this list, so you only change what’s different.</div>`;
   return h;
 }
+function monthSumHTML(k) {
+  const md = monthData(k), spend = spendOf(k), save = md.pay - spend;
+  return `<div class="sum"><span class="muted">Pay</span><span>${fmt(md.pay)}</span></div>
+    <div class="sum"><span class="muted">To spend (${md.items.length} item${md.items.length === 1 ? '' : 's'})</span><span>−${fmt(spend)}</span></div>
+    <div class="sum total"><span>Send to savings</span><span class="${save >= 0 ? 'good' : 'badc'}">${fmt(save)}</span></div>`;
+}
 
-function vMoney() {
+function vSavings() {
   const bal = balanceNow();
-  let h = `<section class="card"><h2>Savings</h2><div class="big">${fmt(bal)}</div>
-    <div class="small muted" style="margin-top:4px">Starting money + paychecks − spending. Use the buttons for anything else (a gift, cash you found, money you lent).</div>
+  let h = `<section class="card"><h2>Savings account</h2><div class="big">${fmt(bal)}</div>
     <div class="btns"><button class="btn" data-act="move" data-type="add">+ Add money</button><button class="btn" data-act="move" data-type="out">− Take out</button></div>
     <div class="btns" style="margin-top:8px"><button class="btn" data-act="fixBalance">My real balance is different…</button></div></section>`;
-  const items = [];
-  if (S.started) items.push({ date: S.startDate || '', t: 0, kind: 'start', amount: S.startBalance, label: 'Starting savings' });
-  Object.entries(S.cycles).forEach(([k, c]) => { if (c.received) items.push({ date: c.receivedOn || k + '-' + pad(S.payDay), t: 1, kind: 'pay', id: k, amount: c.amount, label: monthName(k, { month: 'long' }) + ' paycheck', plus: true }); });
-  S.moves.forEach(m => items.push({ date: m.date, t: m.t || 0, kind: 'move', id: m.id, amount: m.amount, label: (m.type === 'add' ? 'Added' : 'Took out') + (m.note ? ' · ' + m.note : ''), plus: m.type === 'add' }));
-  const cycles = new Set(S.expenses.map(e => cycleOf(e.date)));
-  [...cycles].forEach(k => { const st = cycleStats(k); items.push({ date: k + '-' + pad(S.payDay), t: -1, kind: 'spent', amount: st.total, label: 'Spending · ' + monthName(k, { month: 'long' }) + ' pay' }); });
-  items.sort((a, b) => b.date.localeCompare(a.date) || b.t - a.t);
-  h += `<section class="card"><h2>Activity</h2>`;
-  if (!items.length) h += `<div class="empty">Nothing yet.</div>`;
-  else {
-    h += `<ul class="list">`;
-    items.forEach(i => {
-      const ico = { start: '🏁', pay: '💵', move: i.plus ? '⬆️' : '⬇️', spent: '🧾' }[i.kind];
-      const del = i.kind === 'move' ? `<button class="x" data-del-move="${i.id}">×</button>` : i.kind === 'pay' ? `<button class="x" title="Undo paycheck" data-del-pay="${i.id}">×</button>` : '';
-      const sign = i.kind === 'start' ? '' : (i.plus ? '+' : '−');
-      h += `<li><div class="emoji">${ico}</div><div class="grow"><div class="ttl">${esc(i.label)}</div>${i.date && i.kind !== 'spent' ? `<div class="small muted">${niceDay(i.date)}</div>` : ''}</div><span class="amt ${i.plus ? 'plus' : ''}">${sign}${fmt(i.amount)}</span>${del}</li>`;
-    });
-    h += `</ul>`;
-  }
-  h += `</section>`;
+  const items = S.moves.map(m => ({ ...m })).sort((a, b) => b.date.localeCompare(a.date) || (b.t || 0) - (a.t || 0));
+  h += `<section class="card"><h2>History</h2>`;
+  if (!items.length && !S.started) h += `<div class="empty">Nothing yet.</div>`;
+  h += `<ul class="list">`;
+  items.forEach(m => {
+    const plus = m.type !== 'out';
+    const label = m.type === 'transfer' ? `${monthName(m.month, { month: 'long' })} transfer` : (m.type === 'add' ? 'Added' : 'Took out');
+    const ico = m.type === 'transfer' ? '💸' : (plus ? '⬆️' : '⬇️');
+    h += `<li><div class="emoji">${ico}</div><div class="grow"><div class="ttl">${esc(label)}${m.note ? ' · ' + esc(m.note) : ''}</div><div class="small muted">${niceDay(m.date)}</div></div><span class="amt ${plus ? 'plus' : ''}">${plus ? '+' : '−'}${fmt(m.amount)}</span><button class="x" title="Delete" data-del-move="${m.id}">×</button></li>`;
+  });
+  if (S.started) h += `<li><div class="emoji">🏁</div><div class="grow"><div class="ttl">Starting balance</div>${S.startDate ? `<div class="small muted">${niceDay(S.startDate)}</div>` : ''}</div><span class="amt">${fmt(S.startBalance)}</span><button class="x" title="Edit" data-act="editStart">✎</button></li>`;
+  h += `</ul></section>`;
   return h;
 }
 
-function planSummaryHTML() {
-  const b = budgetTotal(), left = (S.income || 0) - b;
-  return `<div class="sum"><span class="muted">Monthly pay</span><span>${fmt(S.income)}</span></div>
-    <div class="sum"><span class="muted">Budgets</span><span>−${fmt(b)}</span></div>
-    <div class="sum total"><span>Saved each month</span><span class="${left >= 0 ? 'good' : 'badc'}">${fmt(left)}</span></div>
-    <div class="small muted" style="margin-top:6px">Extras you log (food, family, fun…) come out of this, so the real number depends on what you spend.</div>`;
-}
 function vPlan() {
-  let h = `<section class="card"><h2>Paycheck</h2>
-    <div class="row" style="gap:8px"><div class="grow"><label class="f">Monthly pay</label><input class="in" inputmode="decimal" data-f="income" value="${S.income || ''}" placeholder="700"></div><div style="width:110px"><label class="f">Payday</label><input class="in" type="number" min="1" max="28" data-f="payDay" value="${S.payDay}"></div></div></section>`;
-  h += `<section class="card"><h2>Monthly budgets</h2><div class="small muted">Set 0 for things you only want to track (extras).</div>`;
-  S.categories.forEach(c => {
-    h += `<div class="catrow"><input class="in em" maxlength="4" data-cat="${esc(c.id)}" data-k="emoji" value="${esc(c.emoji)}"><input class="in" data-cat="${esc(c.id)}" data-k="name" value="${esc(c.name)}"><input class="in" inputmode="decimal" data-cat="${esc(c.id)}" data-k="budget" value="${c.budget || ''}" placeholder="0"><button class="x" title="Remove" data-del-cat="${esc(c.id)}">×</button></div>`;
-  });
-  h += `<div class="btns"><button class="btn" data-act="addCat">+ Add category</button></div><div id="plansum" style="margin-top:14px">${planSummaryHTML()}</div></section>`;
-  h += `<section class="card"><h2>Planned big expenses</h2><div class="small muted">One-offs that will come out of your savings, like a trip. Delete one once you’ve logged the real spending.</div>`;
-  S.planned.forEach(p => {
-    h += `<div class="planrow"><input class="in" data-plan="${p.id}" data-k="name" value="${esc(p.name)}"><input class="in" inputmode="decimal" data-plan="${p.id}" data-k="amount" value="${p.amount || ''}" placeholder="0"><input class="in" type="month" data-plan="${p.id}" data-k="month" value="${esc(p.month)}"><button class="x" data-del-plan="${p.id}">×</button></div>`;
-  });
-  h += `<div class="btns"><button class="btn" data-act="addPlan">+ Add planned expense</button></div></section>`;
-  h += `<section class="card"><h2>Goal</h2>
+  let h = `<section class="card"><h2>Goal</h2>
     <label class="f">Saving for</label><input class="in" data-f="goal.name" value="${esc(S.goal.name)}">
-    <div class="row" style="gap:8px"><div class="grow"><label class="f">Price</label><input class="in" inputmode="decimal" data-f="goal.price" value="${S.goal.price || ''}" placeholder="shop price"></div><div class="grow"><label class="f">Target paycheck</label><input class="in" type="month" data-f="goal.targetMonth" value="${esc(S.goal.targetMonth)}"></div></div>
-    <label class="f">Currency</label><select class="in" data-f="currency"><option value="USD" ${S.currency === 'USD' ? 'selected' : ''}>US dollar ($)</option><option value="KHR" ${S.currency === 'KHR' ? 'selected' : ''}>Riel (៛)</option></select></section>
-    <section class="card"><h2>Data</h2><div class="small muted">Everything stays in this browser on this device. Nothing is sent anywhere. Clearing your browser data erases it, so back up now and then.</div><div class="btns"><button class="btn" data-act="backup">Back up</button><label class="btn" style="cursor:pointer">Restore<input type="file" accept="application/json,.json" id="restore" hidden></label></div><div class="btns"><button class="btn danger" data-act="reset">Erase everything</button></div></section>`;
+    <div class="row" style="gap:8px"><div class="grow"><label class="f">Price</label><input class="in" inputmode="decimal" data-f="goal.price" value="${S.goal.price || ''}" placeholder="shop price"></div><div class="grow"><label class="f">Get it by</label><input class="in" type="month" data-f="goal.targetMonth" value="${esc(S.goal.targetMonth)}"></div></div></section>`;
+  h += `<section class="card"><h2>Pay</h2>
+    <div class="row" style="gap:8px"><div class="grow"><label class="f">Usual monthly pay</label><input class="in" inputmode="decimal" data-f="income" value="${S.income || ''}"></div><div style="width:110px"><label class="f">Payday</label><input class="in" type="number" min="1" max="28" data-f="payDay" value="${S.payDay}"></div></div></section>`;
+  h += `<section class="card"><h2>Big one-off costs</h2><div class="small muted">Paid out of savings, like a trip. They’re included in the forecast.</div>`;
+  S.big.forEach(b => {
+    h += `<div class="planrow"><input class="in" data-big="${b.id}" data-k="name" value="${esc(b.name)}" placeholder="What"><input class="in" inputmode="decimal" data-big="${b.id}" data-k="amount" value="${b.amount || ''}" placeholder="0"><input class="in" type="month" data-big="${b.id}" data-k="month" value="${esc(b.month)}"><button class="x" data-del-big="${b.id}">×</button></div>`;
+  });
+  h += `<div class="btns"><button class="btn" data-act="addBig">+ Add one-off</button></div>
+    <div class="small muted" style="margin-top:8px">When you actually pay it, use Savings → Take out and delete it here.</div></section>`;
+  h += `<section class="card"><h2>Other</h2>
+    <label class="f">Currency</label><select class="in" data-f="currency"><option value="USD" ${S.currency === 'USD' ? 'selected' : ''}>US dollar ($)</option><option value="KHR" ${S.currency === 'KHR' ? 'selected' : ''}>Riel (៛)</option></select>
+    <div class="small muted" style="margin-top:12px">Everything stays in this browser on this device. Nothing is sent anywhere. Back up now and then. Clearing your browser data erases it.</div>
+    <div class="btns"><button class="btn" data-act="backup">Back up</button><label class="btn" style="cursor:pointer">Restore<input type="file" accept="application/json,.json" id="restore" hidden></label></div>
+    <div class="btns"><button class="btn danger" data-act="reset">Erase everything</button></div></section>`;
   return h;
 }
 
 function render() {
   if (!loaded) return;
-  $('#view').innerHTML = ({ home: vHome, spend: vSpend, money: vMoney, plan: vPlan })[tab]();
+  $('#view').innerHTML = ({ home: vHome, month: vMonth, savings: vSavings, plan: vPlan })[tab]();
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
 }
-function go(t) { tab = t; render(); window.scrollTo(0, 0); }
+function go(t) { tab = t; if (t === 'month') viewMonth = curMonth(); render(); window.scrollTo(0, 0); }
 
 /* ---------- sheets ---------- */
-function sheetMove(type) {
-  openSheet(`<h3>${type === 'add' ? 'Add money' : 'Take money out'}</h3><div class="muted small">${type === 'add' ? 'Money coming in that isn’t your paycheck.' : 'Money leaving savings that isn’t a normal expense.'}</div>
-    <input class="in amount-in" id="m-amt" inputmode="decimal" placeholder="0" style="margin-top:12px">
-    <div class="row" style="gap:8px"><div class="grow"><label class="f">Note (optional)</label><input class="in" id="m-note"></div><div style="width:150px"><label class="f">Date</label><input class="in" type="date" id="m-date" value="${todayISO()}"></div></div>
-    <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmMove" data-type="${type}">Save</button></div>`);
+function amountSheet(title, sub, value, act, extra = '') {
+  openSheet(`<h3>${title}</h3><div class="muted small">${sub}</div>
+    <input class="in amount-in" id="sh-amt" inputmode="decimal" value="${value === '' ? '' : r2(value)}" placeholder="0" style="margin-top:12px">${extra}
+    <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="${act}">Save</button></div>`);
 }
 
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
+  const b = e.target.closest('button, a[data-act]'); if (!b) return;
   const d = b.dataset;
+  if (b.tagName === 'A') e.preventDefault();
   if (d.tab) return go(d.tab);
   if (d.go) return go(d.go);
-  if (d.chip) { draft.cat = d.chip; document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.chip === d.chip)); return; }
-  if (d.delExp) { S.expenses = S.expenses.filter(x => x.id !== d.delExp); save(); render(); return toast('Deleted'); }
-  if (d.delMove) { S.moves = S.moves.filter(x => x.id !== d.delMove); save(); render(); return toast('Deleted'); }
-  if (d.delPay) { delete S.cycles[d.delPay]; save(); render(); return toast('Paycheck removed'); }
-  if (d.delPlan) { S.planned = S.planned.filter(x => x.id !== d.delPlan); save(); render(); return; }
-  if (d.delCat) {
-    const id = d.delCat;
-    if (S.expenses.some(x => x.cat === id)) return openSheet(`<h3>Remove “${esc(cat(id).name)}”?</h3><div class="muted small" style="margin-top:4px">Spending already logged under it stays in your history.</div><div class="btns"><button class="btn" data-act="close">Keep</button><button class="btn primary" data-act="confirmDelCat" data-id="${esc(id)}">Remove</button></div>`);
-    S.categories = S.categories.filter(c => c.id !== id); save(); render(); return;
-  }
+  if (d.nav) { viewMonth = addMonths(viewMonth, +d.nav); return render(); }
+  if (d.delItem) { const m = ensureMonth(viewMonth); m.items = m.items.filter(i => i.id !== d.delItem); save(); return render(); }
+  if (d.delMove) { S.moves = S.moves.filter(m => m.id !== d.delMove); save(); render(); return toast('Deleted'); }
+  if (d.delBig) { S.big = S.big.filter(x => x.id !== d.delBig); save(); return render(); }
   const a = d.act; if (!a) return;
-  if (a === 'close') return closeSheet();
-  if (a === 'backup') return backup();
-  if (a === 'setStart') {
-    const v = $('#start-amt').value; if (v.trim() === '') return toast('Enter how much you have');
-    S.startBalance = num(v); S.started = true; S.startDate = todayISO();
-    // spending logged before today was already in the starting number
-    save(); render(); return toast('Let’s go 💪');
+  const cur = curMonth();
+  switch (a) {
+    case 'close': return closeSheet();
+    case 'today': viewMonth = cur; return render();
+    case 'setStart': {
+      const v = $('#start-amt').value; if (v.trim() === '') return toast('Enter your savings balance');
+      Object.assign(S, { startBalance: num(v), started: true, startDate: todayISO() }); save(); render(); return toast('Let’s go 💪');
+    }
+    case 'editStart': return amountSheet('Starting balance', 'What was in savings when you started.', S.startBalance, 'confirmStart');
+    case 'confirmStart': S.startBalance = num($('#sh-amt').value); save(); closeSheet(); return render();
+    case 'payArrived': return amountSheet(`${monthName(cur, { month: 'long' })} pay arrived 🎉`, 'How much did you get?', monthData(cur).pay, 'confirmPay');
+    case 'confirmPay': {
+      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter the amount');
+      const m = ensureMonth(cur); m.pay = amt; m.received = true; save(); closeSheet(); render(); return toast('Now send ' + fmt(amt - spendOf(cur)) + ' to savings');
+    }
+    case 'sent': return amountSheet('Sent to savings', `How much did you move to your savings account for ${monthName(cur, { month: 'long' })}?`, num(d.amt), 'confirmSent');
+    case 'confirmSent': {
+      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter the amount');
+      ensureMonth(cur).received = true;
+      S.moves.push({ id: uid(), date: todayISO(), t: Date.now(), type: 'transfer', amount: amt, month: cur, note: '' });
+      save(); closeSheet(); render(); return toast('+' + fmt(amt) + ' to savings 🎉');
+    }
+    case 'move': {
+      const add = d.type === 'add';
+      openSheet(`<h3>${add ? 'Add money' : 'Take money out'}</h3><div class="muted small">${add ? 'Money going into savings that isn’t a monthly transfer.' : 'Money leaving savings, e.g. while pay is late, or the Siem Reap trip.'}</div>
+        <input class="in amount-in" id="sh-amt" inputmode="decimal" placeholder="0" style="margin-top:12px">
+        <div class="row" style="gap:8px"><div class="grow"><label class="f">Note (optional)</label><input class="in" id="sh-note"></div><div style="width:150px"><label class="f">Date</label><input class="in" type="date" id="sh-date" value="${todayISO()}"></div></div>
+        <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmMove" data-type="${d.type}">Save</button></div>`);
+      return;
+    }
+    case 'confirmMove': {
+      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter an amount');
+      S.moves.push({ id: uid(), date: $('#sh-date').value || todayISO(), t: Date.now(), type: d.type, amount: amt, note: $('#sh-note').value.trim() });
+      save(); closeSheet(); render(); return toast('Saved');
+    }
+    case 'fixBalance': return amountSheet('What’s your real balance?', 'Check your savings account. The app adds a correction so the numbers match.', '', 'confirmFix');
+    case 'confirmFix': {
+      const v = $('#sh-amt').value; if (v.trim() === '') return toast('Enter your real balance');
+      const diff = r2(num(v) - balanceNow());
+      if (diff) S.moves.push({ id: uid(), date: todayISO(), t: Date.now(), type: diff > 0 ? 'add' : 'out', amount: Math.abs(diff), note: 'Balance correction' });
+      save(); closeSheet(); render(); return toast('Balance updated');
+    }
+    case 'addItem': {
+      const m = ensureMonth(viewMonth); m.items.push({ id: uid(), emoji: '🏷️', name: '', amount: 0 }); save(); render();
+      const ins = document.querySelectorAll('.itemrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) l.focus(); return;
+    }
+    case 'addBig': { S.big.push({ id: uid(), name: '', amount: 0, month: addMonths(cur, 1) }); save(); render(); const ins = document.querySelectorAll('.planrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) l.focus(); return; }
+    case 'backup': return backup();
+    case 'reset': return openSheet(`<h3>Erase everything?</h3><div class="muted small" style="margin-top:4px">Deletes your lists, savings history and settings on this device. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmReset">Erase</button></div>`);
+    case 'confirmReset': S = DEFAULT(); save(); closeSheet(); render(); return toast('Erased');
   }
-  if (a === 'payArrived') {
-    const k = cycleOf(todayISO());
-    return openSheet(`<h3>${monthName(k, { month: 'long' })} pay arrived 🎉</h3><div class="muted small">How much did you get?</div>
-      <input class="in amount-in" id="s-amt" inputmode="decimal" value="${S.income || ''}" style="margin-top:12px">
-      <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmPay">Save</button></div>`);
-  }
-  if (a === 'confirmPay') {
-    const amt = num($('#s-amt').value); if (amt <= 0) return toast('Enter the amount you got');
-    const k = cycleOf(todayISO());
-    S.cycles[k] = { received: true, amount: amt, receivedOn: todayISO() };
-    save(); closeSheet(); render(); return toast('+' + fmt(amt) + ' added to savings');
-  }
-  if (a === 'move') return sheetMove(d.type);
-  if (a === 'confirmMove') {
-    const amt = num($('#m-amt').value); if (amt <= 0) return toast('Enter an amount');
-    S.moves.push({ id: uid(), date: $('#m-date').value || todayISO(), t: Date.now(), type: d.type, amount: amt, note: $('#m-note').value.trim() });
-    save(); closeSheet(); render(); return toast('Saved');
-  }
-  if (a === 'fixBalance') {
-    return openSheet(`<h3>What’s your real balance?</h3><div class="muted small">Count the money you actually have. The app adds a correction so the numbers match.</div>
-      <input class="in amount-in" id="f-amt" inputmode="decimal" placeholder="${fmt(balanceNow())}" style="margin-top:12px">
-      <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmFix">Fix it</button></div>`);
-  }
-  if (a === 'confirmFix') {
-    const v = $('#f-amt').value; if (v.trim() === '') return toast('Enter your real balance');
-    const diff = Math.round((num(v) - balanceNow()) * 100) / 100;
-    if (diff !== 0) S.moves.push({ id: uid(), date: todayISO(), t: Date.now(), type: diff > 0 ? 'add' : 'out', amount: Math.abs(diff), note: 'Balance correction' });
-    save(); closeSheet(); render(); return toast('Balance updated');
-  }
-  if (a === 'addExpense') {
-    const amt = num($('#d-amt').value);
-    if (amt <= 0) { toast('Enter an amount'); $('#d-amt').focus(); return; }
-    if (!draft.cat) return toast('Pick a category');
-    const date = $('#d-date').value || todayISO();
-    S.expenses.push({ id: uid(), date, t: Date.now(), cat: draft.cat, amount: amt, note: $('#d-note').value.trim() });
-    const name = cat(draft.cat).name;
-    draft.amount = ''; draft.note = '';
-    save(); render(); toast(fmt(amt) + ' · ' + name);
-    if (S.startDate && date < S.startDate) toast('Before your start date — not taken from savings again');
-    return;
-  }
-  if (a === 'addCat') { S.categories.push({ id: uid(), emoji: '🏷️', name: 'New category', budget: 0 }); save(); render(); const ins = document.querySelectorAll('.catrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) { l.focus(); l.select(); } return; }
-  if (a === 'addPlan') { S.planned.push({ id: uid(), name: '', amount: 0, month: addMonths(cycleOf(todayISO()), 1) }); save(); render(); const ins = document.querySelectorAll('.planrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) l.focus(); return; }
-  if (a === 'confirmDelCat') { S.categories = S.categories.filter(c => c.id !== d.id); save(); closeSheet(); render(); return; }
-  if (a === 'reset') return openSheet(`<h3>Erase everything?</h3><div class="muted small" style="margin-top:4px">Deletes your plan, spending log and savings history. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmReset">Erase</button></div>`);
-  if (a === 'confirmReset') { S = DEFAULT(); draft = { amount: '', cat: 'coffee', note: '', date: null }; save(); closeSheet(); render(); return toast('Erased'); }
 });
 
 document.addEventListener('input', e => {
   const t = e.target, d = t.dataset;
-  if (t.id === 'd-amt') draft.amount = t.value;
-  if (t.id === 'd-note') draft.note = t.value;
-  if (t.id === 'd-date') draft.date = t.value;
-  const refresh = () => { const ps = $('#plansum'); if (ps) ps.innerHTML = planSummaryHTML(); };
   if (d.f) {
-    const numeric = ['income', 'goal.price', 'payDay'].includes(d.f);
-    let v = numeric ? num(t.value) : t.value;
+    let v = ['income', 'goal.price', 'payDay'].includes(d.f) ? num(t.value) : t.value;
     if (d.f === 'payDay') v = Math.min(28, Math.max(1, Math.round(v) || 1));
     if (d.f.startsWith('goal.')) S.goal[d.f.slice(5)] = v; else S[d.f] = v;
-    save(); refresh();
+    return save();
   }
-  if (d.cat) { const c = S.categories.find(x => x.id === d.cat); if (!c) return; c[d.k] = d.k === 'budget' ? num(t.value) : t.value; save(); refresh(); }
-  if (d.plan) { const p = S.planned.find(x => x.id === d.plan); if (!p) return; p[d.k] = d.k === 'amount' ? num(t.value) : t.value; save(); }
+  if (d.mpay) { ensureMonth(d.mpay).pay = num(t.value); save(); }
+  if (d.item) {
+    const m = ensureMonth(viewMonth);
+    const it = m.items.find(i => i.id === d.item);
+    if (it) { it[d.k] = d.k === 'amount' ? num(t.value) : t.value; save(); }
+  }
+  const ms = $('#msum'); if (ms && viewMonth) ms.innerHTML = monthSumHTML(viewMonth);
+  if (tab === 'month') { const eq = document.querySelector('.eq'); if (eq) { const md = monthData(viewMonth), sp = spendOf(viewMonth); eq.outerHTML = eqHTML(md.pay, sp, md.pay - sp); } }
+  if (d.big) { const x = S.big.find(b => b.id === d.big); if (x) { x[d.k] = d.k === 'amount' ? num(t.value) : t.value; save(); } }
 });
 document.addEventListener('change', e => {
-  if (e.target.id === 'cyc') { spendCycle = e.target.value; render(); }
   if (e.target.dataset.f === 'currency') render();
   if (e.target.id === 'restore' && e.target.files[0]) restore(e.target.files[0]);
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && (e.target.id === 'd-amt' || e.target.id === 'd-note')) { e.preventDefault(); document.querySelector('[data-act="addExpense"]').click(); }
   if (e.key === 'Escape') closeSheet();
+  if (e.key === 'Enter' && e.target.id === 'sh-amt') { e.preventDefault(); const p = $('#sheet .btn.primary'); if (p) p.click(); }
 });
 
 boot();
