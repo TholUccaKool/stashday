@@ -193,8 +193,8 @@ function inheritedItems(k) {
 }
 function monthData(k) {
   const m = S.months[k];
-  if (m) return { pay: m.pay ?? S.income, items: m.items, received: !!m.received, own: true };
-  return { pay: S.income, items: inheritedItems(k), received: false, own: false };
+  if (m) return { pay: m.pay ?? S.income, items: m.items, received: !!m.received, catchUp: m.catchUp || 0, own: true };
+  return { pay: S.income, items: inheritedItems(k), received: false, catchUp: 0, own: false };
 }
 function ensureMonth(k) {
   if (!S.months[k]) S.months[k] = { pay: S.income, items: inheritedItems(k), received: false };
@@ -202,6 +202,7 @@ function ensureMonth(k) {
 }
 const spendOf = k => sumOf(monthData(k).items, i => i.amount || 0);
 const saveOf = k => monthData(k).pay - spendOf(k);
+const toSendOf = k => saveOf(k) + monthData(k).catchUp;
 const sentIn = k => sumOf(S.moves.filter(m => m.type === 'transfer' && m.month === k), m => m.amount);
 const bigIn = k => sumOf(S.big.filter(b => b.month === k), b => b.amount || 0);
 
@@ -218,7 +219,7 @@ function projection() {
   const horizon = Math.max(target ? monthsBetween(cur, target) : 0, 2);
   for (let i = 0; i <= 36; i++) {
     const k = addMonths(cur, i);
-    const pending = Math.max(0, saveOf(k) - sentIn(k));
+    const pending = Math.max(0, toSendOf(k) - sentIn(k));
     B += (i === 0 ? pending : saveOf(k)) - bigIn(k);
     rows.push({ k, bal: B, late: i === 0 && !monthData(k).received, done: i === 0 && pending === 0 });
     if (price && !reach && B >= price) reach = k;
@@ -306,16 +307,16 @@ function vHome() {
   h += `</div></section>`;
 
   // this month
-  const spend = spendOf(cur), toSave = md.pay - spend, sent = sentIn(cur), left = r2(toSave - sent);
+  const spend = spendOf(cur), toSave = md.pay - spend, sent = sentIn(cur), left = r2(toSave + md.catchUp - sent);
   const due = payDate(cur);
   const late = Math.floor((new Date().setHours(0, 0, 0, 0) - due.getTime()) / 86400000);
   h += `<section class="card"><div class="row between"><h2 style="margin:0">${monthName(cur, { month: 'long' })}</h2><button class="btn" style="padding:6px 10px;font-size:13px" data-go="month">Edit list</button></div>`;
   h += eqHTML(md.pay, spend, toSave);
   if (!md.received) {
-    h += `<div class="note warn">Waiting for pay — due ${shortDate(due)}${late > 0 ? `, <b>${late} day${late > 1 ? 's' : ''} late</b>` : ''}. If you dip into savings meanwhile, record it under <b>Savings → Take out</b>.</div>`;
+    h += `<div class="note warn">Waiting for pay — due ${shortDate(due)}${late > 0 ? `, <b>${late} day${late > 1 ? 's' : ''} late</b>` : ''}. Paying from savings until it lands is fine — no need to log it. When pay arrives, Stashday tells you how much to put back.</div>`;
     h += `<div class="btns"><button class="btn primary" data-act="payArrived">Pay arrived</button></div>`;
   } else if (left > 0) {
-    h += `<div class="note ok">Pay received. Send <b>${fmt(left)}</b> to your savings account${sent > 0 ? ` (already sent ${fmt(sent)})` : ''}.</div>`;
+    h += `<div class="note ok">Pay received. Send <b>${fmt(left)}</b> to your savings account${md.catchUp ? ` (${fmt(toSave)} as planned + ${fmt(md.catchUp)} to put back what you paid from savings)` : ''}${sent > 0 ? `, already sent ${fmt(sent)}` : ''}. Your spending account keeps ${fmt(md.pay - toSave - md.catchUp)} for the rest of the month.</div>`;
     h += `<div class="btns"><button class="btn primary" data-act="sent" data-amt="${left}">I sent ${fmt(left)} to savings</button></div>`;
   } else {
     h += `<div class="note ok">✓ Done for ${monthName(cur, { month: 'long' })} — ${fmt(sent)} sent to savings. Your spending account covers the rest.</div>`;
@@ -406,6 +407,14 @@ function amountSheet(title, sub, value, act, extra = '') {
     <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="${act}">Save</button></div>`);
 }
 
+function payPreview() {
+  const el = $('#pa-prev'); if (!el) return;
+  const cur = curMonth(), spend = spendOf(cur);
+  const pay = num($('#pa-pay').value), cu = Math.max(0, Math.min(num($('#pa-cu').value), spend));
+  const send = pay - spend + cu;
+  el.innerHTML = `Send <b>${fmt(send)}</b> to savings (${fmt(pay - spend)} planned + ${fmt(cu)} put back). Your spending account keeps <b>${fmt(pay - send)}</b> for the rest of the month’s list.`;
+}
+
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
   const b = e.target.closest('button, a[data-act]'); if (!b) return;
@@ -428,10 +437,27 @@ document.addEventListener('click', e => {
     }
     case 'editStart': return amountSheet('Starting balance', 'What was in savings when you started.', S.startBalance, 'confirmStart');
     case 'confirmStart': S.startBalance = num($('#sh-amt').value); save(); closeSheet(); return render();
-    case 'payArrived': return amountSheet(`${monthName(cur, { month: 'long' })} pay arrived 🎉`, 'How much did you get?', monthData(cur).pay, 'confirmPay');
+    case 'payArrived': {
+      const md = monthData(cur), spend = spendOf(cur);
+      const start = payDate(cur), end = payDate(addMonths(cur, 1));
+      const frac = Math.min(1, Math.max(0, (Date.now() - start.getTime()) / (end - start)));
+      const est = Math.round(spend * frac);
+      openSheet(`<h3>${monthName(cur, { month: 'long' })} pay arrived 🎉</h3>
+        <label class="f">How much did you get?</label><input class="in" id="pa-pay" inputmode="decimal" value="${md.pay}">
+        <label class="f">What’s in your savings account right now?</label><input class="in" id="pa-bal" inputmode="decimal" value="${r2(balanceNow())}">
+        <label class="f">How much of this month’s list did you already pay from savings?</label><input class="in" id="pa-cu" inputmode="decimal" value="${est}">
+        <div class="small muted" style="margin-top:6px">Things like coffee and gas since ${shortDate(start)}. ${est ? `About ${fmt(est)} if you spent at your usual pace. ` : ''}Extras (games, family, snacks) don’t count. They’re just spent.</div>
+        <div class="note ok" id="pa-prev"></div>
+        <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmPay">Save</button></div>`);
+      payPreview();
+      return;
+    }
     case 'confirmPay': {
-      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter the amount');
-      const m = ensureMonth(cur); m.pay = amt; m.received = true; save(); closeSheet(); render(); return toast('Now send ' + fmt(amt - spendOf(cur)) + ' to savings');
+      const pay = num($('#pa-pay').value); if (pay <= 0) return toast('Enter the amount');
+      const balV = $('#pa-bal').value, cu = Math.max(0, Math.min(num($('#pa-cu').value), spendOf(cur)));
+      if (balV.trim() !== '') { const diff = r2(num(balV) - balanceNow()); if (diff) S.moves.push({ id: uid(), date: todayISO(), t: Date.now() - 1, type: diff > 0 ? 'add' : 'out', amount: Math.abs(diff), note: diff < 0 ? 'Spent while pay was late' : 'Balance correction' }); }
+      const m = ensureMonth(cur); m.pay = pay; m.received = true; m.catchUp = cu;
+      save(); closeSheet(); render(); return toast('Now send ' + fmt(toSendOf(cur) - sentIn(cur)) + ' to savings');
     }
     case 'sent': return amountSheet('Sent to savings', `How much did you move to your savings account for ${monthName(cur, { month: 'long' })}?`, num(d.amt), 'confirmSent');
     case 'confirmSent': {
@@ -473,6 +499,7 @@ document.addEventListener('click', e => {
 
 document.addEventListener('input', e => {
   const t = e.target, d = t.dataset;
+  if (t.id && t.id.startsWith('pa-')) return payPreview();
   if (d.f) {
     let v = ['income', 'goal.price', 'payDay'].includes(d.f) ? num(t.value) : t.value;
     if (d.f === 'payDay') v = Math.min(28, Math.max(1, Math.round(v) || 1));
@@ -495,7 +522,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeSheet();
-  if (e.key === 'Enter' && e.target.id === 'sh-amt') { e.preventDefault(); const p = $('#sheet .btn.primary'); if (p) p.click(); }
+  if (e.key === 'Enter' && (e.target.id === 'sh-amt' || (e.target.id || '').startsWith('pa-'))) { e.preventDefault(); const p = $('#sheet .btn.primary'); if (p) p.click(); }
 });
 
 boot();
