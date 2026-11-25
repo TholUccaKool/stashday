@@ -7,7 +7,7 @@
 <meta name="application-name" content="Stashday">
 <meta name="apple-mobile-web-app-title" content="Stashday">
 <meta name="theme-color" content="#0f766e">
-<meta name="description" content="Stashday: plan your month, send the rest to savings, and see which payday gets you to your goal. Private, no account, works offline.">
+<meta name="description" content="Stashday: plan your month, send the rest to savings, and see which payday gets you to your goal. Works offline, optional sync with Google.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -254,7 +254,28 @@ function projection() {
 const LKEY = 'stashday.v3';
 function setStatus(t, kind) { $('#status').textContent = t; $('#dot').className = 'dot ' + (kind || ''); }
 function hydrate(o) { const s = Object.assign(DEFAULT(), o || {}); s.goal = Object.assign(DEFAULT().goal, (o && o.goal) || {}); return s; }
-function save() { try { localStorage.setItem(LKEY, JSON.stringify(S)); setStatus('Saved on this device', 'ok'); } catch (e) { setStatus('Can’t save here — use Back up', 'warn'); } }
+function save(opts) {
+  const remote = opts && opts.remote;
+  if (!remote) S.updatedAt = Date.now();
+  try { localStorage.setItem(LKEY, JSON.stringify(S)); } catch (e) { setStatus('Can’t save here — use Back up', 'warn'); return; }
+  if (!remote && window.Sync && Sync.user) Sync.push(); else showSyncStatus();
+}
+function showSyncStatus() {
+  const y = window.Sync;
+  if (!y || !y.user) return setStatus('Saved on this device', 'ok');
+  if (y.state === 'saving') return setStatus('Syncing…');
+  if (y.state === 'offline') return setStatus('Offline — will sync', 'warn');
+  if (y.state === 'error') return setStatus('Sync problem — saved on device', 'warn');
+  setStatus('Synced', 'ok');
+}
+// Called by the sync module when newer data arrives from another device.
+function applyRemote(state) {
+  S = hydrate(state); save({ remote: true });
+  const a = document.activeElement;
+  if (a && a.matches && a.matches('#view input, #view select')) { applyRemote.pending = true; return; }
+  render();
+}
+document.addEventListener('focusout', () => { if (applyRemote.pending) { applyRemote.pending = false; setTimeout(render, 0); } });
 function boot() {
   try {
     const raw = localStorage.getItem(LKEY);
@@ -271,7 +292,7 @@ function boot() {
       }
     }
   } catch (e) {}
-  loaded = true; setStatus('Saved on this device', 'ok'); render();
+  loaded = true; showSyncStatus(); render();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 function backup() {
@@ -308,9 +329,10 @@ function vHome() {
       <div class="row" style="gap:8px"><div class="grow"><label class="f">Price</label><input class="in" id="ob-price" inputmode="decimal" placeholder="optional"></div><div class="grow"><label class="f">Get it by</label><input class="in" id="ob-month" type="month"></div></div>
       <label class="f">This month’s pay</label>
       <div class="row" style="gap:8px"><label class="btn grow" style="justify-content:flex-start;gap:8px"><input type="radio" name="ob-now" value="done" checked> Already got it</label><label class="btn grow" style="justify-content:flex-start;gap:8px"><input type="radio" name="ob-now" value="wait"> Still waiting</label></div>
-      <div class="small muted" style="margin-top:10px">Everything stays on this device. No account, nothing sent anywhere.</div>
+      <div class="small muted" style="margin-top:10px">Saved on this device. Sign in with Google if you want it synced across your devices.</div>
       <div class="btns"><button class="btn primary" data-act="setup">Start</button></div>
-      <div class="small muted" style="text-align:center;margin-top:12px">Used Stashday before? <label style="color:var(--accent);font-weight:600;cursor:pointer">Restore a backup<input type="file" accept="application/json,.json" id="restore" hidden></label></div></section>`;
+      ${window.Sync && Sync.available ? `<div class="btns"><button class="btn" data-act="signIn">Used Stashday before? Sign in with Google</button></div>` : ''}
+      <div class="small muted" style="text-align:center;margin-top:12px">Have a backup file? <label style="color:var(--accent);font-weight:600;cursor:pointer">Restore a backup<input type="file" accept="application/json,.json" id="restore" hidden></label></div></section>`;
   }
 
   // goal
@@ -420,9 +442,22 @@ function vPlan() {
   });
   h += `<div class="btns"><button class="btn" data-act="addBig">+ Add one-off</button></div>
     <div class="small muted" style="margin-top:8px">When you actually pay it, use Savings → Take out and delete it here.</div></section>`;
+  const y = window.Sync;
+  if (y && y.available) {
+    h += `<section class="card"><h2>Sync across devices</h2>`;
+    if (y.user) {
+      h += `<div class="row"><div class="emoji">☁️</div><div class="grow"><div class="ttl">${esc(y.user.email || y.user.name || 'Signed in')}</div><div class="small muted">Your plan syncs to every device where you sign in with this Google account.</div></div></div>
+        <div class="btns"><button class="btn" data-act="signOut">Sign out on this device</button></div>
+        <div class="btns" style="margin-top:8px"><button class="btn danger" data-act="deleteCloud">Delete my cloud copy</button></div>`;
+    } else {
+      h += `<div class="small muted">Sign in with Google to keep the same numbers on your phone, laptop and any browser. Only you can see your data.</div>
+        <div class="btns"><button class="btn primary" data-act="signIn">Sign in with Google</button></div>`;
+    }
+    h += `</section>`;
+  }
   h += `<section class="card"><h2>Other</h2>
     <label class="f">Currency</label><select class="in" data-f="currency">${currencyOptions(S.currency)}</select>
-    <div class="small muted" style="margin-top:12px">Everything stays in this browser on this device. Nothing is sent anywhere. Back up now and then. Clearing your browser data erases it.</div>
+    <div class="small muted" style="margin-top:12px">${window.Sync && Sync.user ? 'Saved on this device and synced to your Google account.' : 'Saved in this browser on this device. Sign in above to sync, or back up now and then.'}</div>
     <div class="btns"><button class="btn" data-act="backup">Back up</button><label class="btn" style="cursor:pointer">Restore<input type="file" accept="application/json,.json" id="restore" hidden></label></div>
     <div class="btns"><button class="btn danger" data-act="reset">Erase everything</button></div></section>
     <div class="small muted" style="text-align:center;padding:4px 0 8px"><a href="/privacy.html" style="color:var(--muted)">Privacy policy</a> · Stashday</div>`;
@@ -532,8 +567,12 @@ document.addEventListener('click', e => {
     }
     case 'addBig': { S.big.push({ id: uid(), name: '', amount: 0, month: addMonths(cur, 1) }); save(); render(); const ins = document.querySelectorAll('.planrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) l.focus(); return; }
     case 'backup': return backup();
-    case 'reset': return openSheet(`<h3>Erase everything?</h3><div class="muted small" style="margin-top:4px">Deletes your lists, savings history and settings on this device. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmReset">Erase</button></div>`);
-    case 'confirmReset': S = DEFAULT(); save(); closeSheet(); render(); return toast('Erased');
+    case 'signIn': return window.Sync && Sync.signIn();
+    case 'signOut': return window.Sync && Sync.signOut();
+    case 'deleteCloud': return openSheet(`<h3>Delete your cloud copy?</h3><div class="muted small" style="margin-top:4px">Removes your Stashday data from your Google account and signs you out. This device keeps its own copy. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmDeleteCloud">Delete</button></div>`);
+    case 'confirmDeleteCloud': closeSheet(); return window.Sync && Sync.deleteCloud();
+    case 'reset': return openSheet(`<h3>Erase everything?</h3><div class="muted small" style="margin-top:4px">Deletes your lists, savings history and settings${window.Sync && Sync.user ? ', on this device and in your Google account' : ' on this device'}. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmReset">Erase</button></div>`);
+    case 'confirmReset': S = DEFAULT(); save(); closeSheet(); render(); if (window.Sync && Sync.user) Sync.deleteCloud(true); return toast('Erased');
   }
 });
 
@@ -566,6 +605,94 @@ document.addEventListener('keydown', e => {
 });
 
 boot();
+</script>
+
+<script type="module">
+// Stashday sync: Google sign-in + one Firestore document per person (users/{uid}).
+// Security rules only let a signed-in person read or write their own document.
+const HOSTS = ['stashday.vercel.app', 'localhost', '127.0.0.1'];
+const Sync = window.Sync = { available: false, user: null, state: 'idle' };
+if (HOSTS.includes(location.hostname)) {
+  try {
+    const V = '13.2.0', base = `https://www.gstatic.com/firebasejs/${V}/`;
+    const [{ initializeApp }, A, F] = await Promise.all([
+      import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')
+    ]);
+    const app = initializeApp({
+      apiKey: 'AIzaSyDkxC_7BITxMKbcoYBzQnC-oAIoDxsrhWM',
+      authDomain: 'stashday-1ead7.firebaseapp.com',
+      projectId: 'stashday-1ead7',
+      storageBucket: 'stashday-1ead7.firebasestorage.app',
+      messagingSenderId: '229276556189',
+      appId: '1:229276556189:web:a4a43cbc923ce3a8a92d74'
+    });
+    const auth = A.getAuth(app);
+    const db = F.initializeFirestore(app, { localCache: F.persistentLocalCache() });
+    let ref = null, unsub = null, timer = null, busy = false, again = false;
+    const status = st => { Sync.state = st; showSyncStatus(); };
+    const clean = () => JSON.parse(JSON.stringify(S));
+
+    Sync.available = true;
+    Sync.signIn = async () => {
+      const provider = new A.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      try { await A.signInWithPopup(auth, provider); }
+      catch (e) {
+        if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) return A.signInWithRedirect(auth, provider);
+        if (e && e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') toast('Sign-in didn’t work. Try again.');
+      }
+    };
+    Sync.signOut = async () => { await A.signOut(auth); toast('Signed out. This device keeps its copy.'); };
+    Sync.push = () => {
+      if (!ref || !S.started) return showSyncStatus();
+      status(navigator.onLine ? 'saving' : 'offline');
+      clearTimeout(timer); timer = setTimeout(flush, 700);
+    };
+    async function flush() {
+      if (!ref) return;
+      if (busy) { again = true; return; }
+      busy = true;
+      try { await F.setDoc(ref, { state: clean(), updatedAt: S.updatedAt || Date.now() }); status(navigator.onLine ? 'synced' : 'offline'); }
+      catch (e) { console.warn('[Stashday] sync failed', e); status('error'); }
+      busy = false; if (again) { again = false; flush(); }
+    }
+    Sync.deleteCloud = async (quiet) => {
+      if (!ref) return;
+      try { if (unsub) { unsub(); unsub = null; } await F.deleteDoc(ref); } catch (e) { console.warn('[Stashday] delete failed', e); }
+      if (!quiet) { await A.signOut(auth); toast('Cloud copy deleted'); } else attach(auth.currentUser);
+    };
+
+    async function attach(user) {
+      if (unsub) { unsub(); unsub = null; }
+      ref = F.doc(db, 'users', user.uid);
+      status('saving');
+      let remote = null;
+      try { const snap = await F.getDoc(ref); remote = snap.exists() ? snap.data() : null; } catch (e) { console.warn('[Stashday] read failed', e); }
+      const localTime = S.updatedAt || 0;
+      if (remote && remote.state && (!S.started || (remote.updatedAt || 0) > localTime)) {
+        applyRemote(remote.state); toast('Loaded your data from your Google account');
+      } else if (S.started && (!remote || localTime > (remote.updatedAt || 0))) {
+        await flush(); if (!remote) toast('Your data is now synced');
+      }
+      status(navigator.onLine ? 'synced' : 'offline');
+      unsub = F.onSnapshot(ref, snap => {
+        if (!snap.exists() || snap.metadata.hasPendingWrites) return;
+        const d = snap.data();
+        if (d && d.state && (d.updatedAt || 0) > (S.updatedAt || 0)) applyRemote(d.state);
+      }, e => { console.warn('[Stashday] listener stopped', e); status('error'); });
+    }
+
+    A.getRedirectResult(auth).catch(() => {});
+    A.onAuthStateChanged(auth, user => {
+      Sync.user = user ? { uid: user.uid, email: user.email, name: user.displayName } : null;
+      if (user) attach(user); else { if (unsub) { unsub(); unsub = null; } ref = null; Sync.state = 'idle'; showSyncStatus(); }
+      if (typeof render === 'function') render();
+    });
+    addEventListener('online', () => { if (ref) { status('saving'); flush(); } });
+    addEventListener('offline', () => { if (ref) status('offline'); });
+    if (typeof render === 'function') render();
+  } catch (e) { console.warn('[Stashday] sync unavailable', e); }
+}
 </script>
 </body>
 </html>
