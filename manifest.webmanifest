@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Stashday",
   "short_name": "Stashday",
-  "description": "Plan your month, send the rest to savings, and see which payday gets you to your goal. Private, no account, works offline.",
+  "description": "Plan your month, send the rest to savings, and see which payday gets you to your goal. Works offline, optional sync with Google.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
