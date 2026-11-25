@@ -226,7 +226,11 @@ const spendOf = k => sumOf(monthData(k).items, i => i.amount || 0);
 const saveOf = k => monthData(k).pay - spendOf(k);
 const toSendOf = k => saveOf(k) + monthData(k).catchUp;
 const sentIn = k => sumOf(S.moves.filter(m => m.type === 'transfer' && m.month === k), m => m.amount);
-const bigIn = k => sumOf(S.big.filter(b => b.month === k), b => b.amount || 0);
+const bigSpent = id => sumOf(S.moves.filter(m => m.type === 'out' && m.bigId === id), m => m.amount);
+const bigLeft = b => Math.max(0, (b.amount || 0) - bigSpent(b.id));
+const bigIn = k => sumOf(S.big.filter(b => b.month === k), bigLeft);
+const owedOn = m => r2(m.amount - (m.repaidAmt || 0));
+const openLoans = () => S.moves.filter(m => m.type === 'out' && m.loan && owedOn(m) > 0);
 
 /* ---------- savings ---------- */
 function balanceNow() {
@@ -378,6 +382,9 @@ function vHome() {
   } else {
     h += `<div class="note ok">✓ Done for ${monthName(cur, { month: 'long' })} — ${fmt(sent)} sent to savings. Your spending account covers the rest.</div>`;
   }
+  if (md.received && !(md.done && sent === 0)) h += `<div class="btns" style="margin-top:8px"><button class="btn" data-act="morePay">+ Got more pay this month</button></div>`;
+  const owed = sumOf(openLoans(), owedOn);
+  if (owed > 0) h += `<div class="note warn">🤝 <b>${fmt(owed)}</b> owed back to you — <a href="#" data-act="goSavings" style="color:inherit">see loans</a>. It’s not counted in the forecast until it’s paid back.</div>`;
   h += `</section>`;
   return h;
 }
@@ -415,14 +422,22 @@ function vSavings() {
   let h = `<section class="card"><h2>Savings account</h2><div class="big">${fmt(bal)}</div>
     <div class="btns"><button class="btn" data-act="move" data-type="add">+ Add money</button><button class="btn" data-act="move" data-type="out">− Take out</button></div>
     <div class="btns" style="margin-top:8px"><button class="btn" data-act="fixBalance">My real balance is different…</button></div></section>`;
+  const loans = openLoans();
+  if (loans.length) {
+    h += `<section class="card"><h2>Owed to you · ${fmt(sumOf(loans, owedOn))}</h2><ul class="list">`;
+    loans.forEach(m => { h += `<li><div class="emoji">🤝</div><div class="grow"><div class="ttl">${esc(m.note || 'Loan')}</div><div class="small muted">Lent ${niceDay(m.date)}${m.repaidAmt ? ` · ${fmt(m.repaidAmt)} paid back` : ''}</div></div><span class="amt">${fmt(owedOn(m))}</span><button class="btn" style="padding:6px 10px;font-size:13px" data-act="repaid" data-id="${m.id}">Paid back</button></li>`; });
+    h += `</ul></section>`;
+  }
   const items = S.moves.map(m => ({ ...m })).sort((a, b) => b.date.localeCompare(a.date) || (b.t || 0) - (a.t || 0));
   h += `<section class="card"><h2>History</h2>`;
   if (!items.length && !S.started) h += `<div class="empty">Nothing yet.</div>`;
   h += `<ul class="list">`;
   items.forEach(m => {
     const plus = m.type !== 'out';
-    const label = m.type === 'transfer' ? `${monthName(m.month, { month: 'long' })} transfer` : (m.type === 'add' ? 'Added' : 'Took out');
-    const ico = m.type === 'transfer' ? '💸' : (plus ? '⬆️' : '⬇️');
+    const big = m.bigId ? S.big.find(b => b.id === m.bigId) : null;
+    const label = m.type === 'transfer' ? `${monthName(m.month, { month: 'long' })} transfer` : m.repays ? 'Paid back' : m.loan ? (owedOn(m) <= 0 ? 'Lent (paid back)' : 'Lent') : (m.type === 'add' ? 'Added' : 'Took out');
+    const ico = m.type === 'transfer' ? '💸' : (m.loan || m.repays) ? '🤝' : big ? '🧳' : (plus ? '⬆️' : '⬇️');
+    if (big && !m.note) m.note = big.name;
     h += `<li><div class="emoji">${ico}</div><div class="grow"><div class="ttl">${esc(label)}${m.note ? ' · ' + esc(m.note) : ''}</div><div class="small muted">${niceDay(m.date)}</div></div><span class="amt ${plus ? 'plus' : ''}">${plus ? '+' : '−'}${fmt(m.amount)}</span><button class="x" title="Delete" data-del-move="${m.id}">×</button></li>`;
   });
   if (S.started) h += `<li><div class="emoji">🏁</div><div class="grow"><div class="ttl">Starting balance</div>${S.startDate ? `<div class="small muted">${niceDay(S.startDate)}</div>` : ''}</div><span class="amt">${fmt(S.startBalance)}</span><button class="x" title="Edit" data-act="editStart">✎</button></li>`;
@@ -438,10 +453,12 @@ function vPlan() {
     <div class="row" style="gap:8px"><div class="grow"><label class="f">Usual monthly pay</label><input class="in" inputmode="decimal" data-f="income" value="${S.income || ''}"></div><div style="width:110px"><label class="f">Payday</label><input class="in" type="number" min="1" max="28" data-f="payDay" value="${S.payDay}"></div></div></section>`;
   h += `<section class="card"><h2>Big one-off costs</h2><div class="small muted">Things paid out of savings, like a trip. They’re included in the forecast.</div>`;
   S.big.forEach(b => {
+    const sp = bigSpent(b.id);
+    if (sp) h += `<div class="small muted" style="margin-top:10px">${esc(b.name || 'Planned cost')}: ${fmt(sp)} spent · <b>${fmt(bigLeft(b))} left</b></div>`;
     h += `<div class="planrow"><input class="in" data-big="${b.id}" data-k="name" value="${esc(b.name)}" placeholder="What"><input class="in" inputmode="decimal" data-big="${b.id}" data-k="amount" value="${b.amount || ''}" placeholder="0"><input class="in" type="month" data-big="${b.id}" data-k="month" value="${esc(b.month)}"><button class="x" data-del-big="${b.id}">×</button></div>`;
   });
   h += `<div class="btns"><button class="btn" data-act="addBig">+ Add one-off</button></div>
-    <div class="small muted" style="margin-top:8px">When you actually pay it, use Savings → Take out and delete it here.</div></section>`;
+    <div class="small muted" style="margin-top:8px">When you pay for part of it, use Savings → Take out and pick it under “Part of”. The amount left updates itself.</div></section>`;
   const y = window.Sync;
   if (y && y.available) {
     h += `<section class="card"><h2>Sync across devices</h2>`;
@@ -478,6 +495,38 @@ function amountSheet(title, sub, value, act, extra = '') {
     <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="${act}">Save</button></div>`);
 }
 
+function impactPreview() {
+  const el = $('#sh-impact'); if (!el) return;
+  const amt = num(($('#sh-amt') || {}).value), big = ($('#sh-big') || {}).value, loan = ($('#sh-loan') || {}).checked;
+  const price = S.goal.price || 0;
+  if (amt <= 0 || !price || balanceNow() >= price) { el.style.display = 'none'; return; }
+  const before = projection();
+  S.moves.push({ id: '__preview', date: todayISO(), t: 0, type: 'out', amount: amt, bigId: big || undefined });
+  const after = projection();
+  S.moves.pop();
+  const name = S.goal.name ? esc(S.goal.name) : 'your goal';
+  const when = r => r ? `${monthName(r, { month: 'short', year: 'numeric' })} payday` : 'not in sight';
+  let msg, cls = 'ok';
+  if (big) {
+    const b = S.big.find(x => x.id === big), over = Math.max(0, amt - bigLeft(b));
+    msg = over > 0 ? `This is ${fmt(over)} more than you planned for ${esc(b.name)}. ` : `Already planned in ${esc(b.name)}, so it doesn’t change your ${name} date. `;
+    if (over > 0) cls = 'warn';
+  } else msg = '';
+  if (!big || cls === 'warn') {
+    if (after.reach !== before.reach) { cls = 'bad'; msg += `This pushes ${name} from your <b>${when(before.reach)}</b> to your <b>${when(after.reach)}</b>. `; }
+    else msg += `${name}: still your <b>${when(after.reach)}</b>. `;
+    if (after.tRow && before.tRow) {
+      const b4 = before.tRow.bal - price, aft = after.tRow.bal - price;
+      if (b4 >= 0 && aft < 0) { cls = 'bad'; msg += `You’d now be <b>${fmt(-aft)} short</b> for ${monthName(S.goal.targetMonth, { month: 'short' })}.`; }
+      else if (aft >= 0) msg += `${fmt(aft)} to spare by ${monthName(S.goal.targetMonth, { month: 'short' })}.`;
+      else msg += `${fmt(-aft)} short by ${monthName(S.goal.targetMonth, { month: 'short' })} (was ${fmt(-b4)}).`;
+      if (cls === 'ok' && aft >= 0 && aft < 50) cls = 'warn';
+    }
+  }
+  if (loan) msg += ' You’ll get it back when it’s repaid.';
+  el.className = 'note ' + cls; el.innerHTML = msg; el.style.display = '';
+}
+
 function payPreview() {
   const el = $('#pa-prev'); if (!el) return;
   const cur = curMonth(), spend = spendOf(cur);
@@ -495,7 +544,7 @@ document.addEventListener('click', e => {
   if (d.go) return go(d.go);
   if (d.nav) { viewMonth = addMonths(viewMonth, +d.nav); return render(); }
   if (d.delItem) { const m = ensureMonth(viewMonth); m.items = m.items.filter(i => i.id !== d.delItem); save(); return render(); }
-  if (d.delMove) { S.moves = S.moves.filter(m => m.id !== d.delMove); save(); render(); return toast('Deleted'); }
+  if (d.delMove) { const gone = S.moves.find(m => m.id === d.delMove); if (gone && gone.repays) { const l = S.moves.find(m => m.id === gone.repays); if (l) l.repaidAmt = Math.max(0, r2((l.repaidAmt || 0) - gone.amount)); } S.moves = S.moves.filter(m => m.id !== d.delMove); save(); render(); return toast('Deleted'); }
   if (d.delBig) { S.big = S.big.filter(x => x.id !== d.delBig); save(); return render(); }
   const a = d.act; if (!a) return;
   const cur = curMonth();
@@ -543,17 +592,47 @@ document.addEventListener('click', e => {
     }
     case 'move': {
       const add = d.type === 'add';
-      openSheet(`<h3>${add ? 'Add money' : 'Take money out'}</h3><div class="muted small">${add ? 'Money going into savings that isn’t a monthly transfer.' : 'Money leaving savings, e.g. while pay is late, or a trip.'}</div>
+      const bigs = S.big.filter(b => b.month >= cur && bigLeft(b) > 0);
+      openSheet(`<h3>${add ? 'Add money' : 'Take money out'}</h3><div class="muted small">${add ? 'Money going into savings that isn’t a monthly transfer.' : 'Money leaving savings: something you’re buying, a loan, or covering late pay.'}</div>
         <input class="in amount-in" id="sh-amt" inputmode="decimal" placeholder="0" style="margin-top:12px">
-        <div class="row" style="gap:8px"><div class="grow"><label class="f">Note (optional)</label><input class="in" id="sh-note"></div><div style="width:150px"><label class="f">Date</label><input class="in" type="date" id="sh-date" value="${todayISO()}"></div></div>
+        <div class="row" style="gap:8px"><div class="grow"><label class="f">${add ? 'Note (optional)' : 'What for'}</label><input class="in" id="sh-note" placeholder="${add ? '' : 'e.g. new game'}"></div><div style="width:150px"><label class="f">Date</label><input class="in" type="date" id="sh-date" value="${todayISO()}"></div></div>
+        ${add ? '' : `${bigs.length ? `<label class="f">Part of a planned cost?</label><select class="in" id="sh-big"><option value="">No, it’s extra</option>${bigs.map(b => `<option value="${b.id}">${esc(b.name || 'Planned cost')} (${fmt(bigLeft(b))} left)</option>`).join('')}</select>` : ''}
+        <label class="row" style="gap:10px;margin-top:12px;cursor:pointer"><input type="checkbox" id="sh-loan" style="width:20px;height:20px;accent-color:var(--accent)"><span>It’s a loan. Someone will pay me back.</span></label>
+        <div class="note" id="sh-impact" style="display:none"></div>`}
         <div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" data-act="confirmMove" data-type="${d.type}">Save</button></div>`);
+      if (!add) impactPreview();
       return;
     }
     case 'confirmMove': {
       const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter an amount');
-      S.moves.push({ id: uid(), date: $('#sh-date').value || todayISO(), t: Date.now(), type: d.type, amount: amt, note: $('#sh-note').value.trim() });
-      save(); closeSheet(); render(); return toast('Saved');
+      const m = { id: uid(), date: $('#sh-date').value || todayISO(), t: Date.now(), type: d.type, amount: amt, note: $('#sh-note').value.trim() };
+      const big = $('#sh-big') && $('#sh-big').value, loan = $('#sh-loan') && $('#sh-loan').checked;
+      if (d.type === 'out' && big) m.bigId = big;
+      if (d.type === 'out' && loan) m.loan = true;
+      S.moves.push(m);
+      save(); closeSheet(); render();
+      return toast(m.bigId ? 'Saved. Planned cost updated' : m.loan ? 'Saved as a loan' : 'Saved');
     }
+    case 'repaid': {
+      const loan = S.moves.find(x => x.id === d.id); if (!loan) return;
+      return amountSheet('Paid back 🤝', `How much did you get back for “${esc(loan.note || 'Loan')}”?`, owedOn(loan), 'confirmRepaid" data-id="' + loan.id);
+    }
+    case 'confirmRepaid': {
+      const loan = S.moves.find(x => x.id === d.id); if (!loan) return;
+      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter an amount');
+      S.moves.push({ id: uid(), date: todayISO(), t: Date.now(), type: 'add', amount: amt, note: loan.note || 'Loan', repays: loan.id });
+      loan.repaidAmt = r2((loan.repaidAmt || 0) + Math.min(amt, owedOn(loan)));
+      save(); closeSheet(); render(); return toast('+' + fmt(amt) + ' back in savings');
+    }
+    case 'morePay': return amountSheet('More pay arrived', `How much more did you get for ${monthName(cur, { month: 'long' })}?`, '', 'confirmMorePay');
+    case 'confirmMorePay': {
+      const amt = num($('#sh-amt').value); if (amt <= 0) return toast('Enter the amount');
+      const m = ensureMonth(cur); m.pay = r2((m.pay ?? S.income) + amt); m.received = true;
+      save(); closeSheet(); render();
+      const left = r2(toSendOf(cur) - sentIn(cur));
+      return toast(left > 0 ? 'Now send ' + fmt(left) + ' to savings' : 'Pay updated');
+    }
+    case 'goSavings': return go('savings');
     case 'fixBalance': return amountSheet('What’s your real balance?', 'Check your savings account. The app adds a correction so the numbers match.', '', 'confirmFix');
     case 'confirmFix': {
       const v = $('#sh-amt').value; if (v.trim() === '') return toast('Enter your real balance');
@@ -579,6 +658,7 @@ document.addEventListener('click', e => {
 document.addEventListener('input', e => {
   const t = e.target, d = t.dataset;
   if (t.id && t.id.startsWith('pa-')) return payPreview();
+  if (t.id === 'sh-amt' || t.id === 'sh-big' || t.id === 'sh-loan') impactPreview();
   if (d.f) {
     let v = ['income', 'goal.price', 'payDay'].includes(d.f) ? num(t.value) : t.value;
     if (d.f === 'payDay') v = Math.min(28, Math.max(1, Math.round(v) || 1));
@@ -597,6 +677,7 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('change', e => {
   if (e.target.dataset.f === 'currency') render();
+  if (e.target.id === 'sh-big' || e.target.id === 'sh-loan') impactPreview();
   if (e.target.id === 'restore' && e.target.files[0]) restore(e.target.files[0]);
 });
 document.addEventListener('keydown', e => {
