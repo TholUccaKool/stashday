@@ -129,6 +129,9 @@ nav.tabs button.on{color:var(--accent)}
 <div class="toast" id="toast"></div>
 
 <script>
+// Always use the main address: preview links from Vercel have their own empty storage.
+if (/\.vercel\.app$/.test(location.hostname) && location.hostname !== 'stashday.vercel.app') location.replace('https://stashday.vercel.app' + location.pathname + location.hash);
+
 /* Stashday — how it works:
    Each month: pay − what you plan to spend = what you send to savings.
    Savings = starting money + every transfer you send + extra adds − anything you take out.
