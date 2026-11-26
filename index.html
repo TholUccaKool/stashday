@@ -299,6 +299,37 @@ function boot() {
   loaded = true; showSyncStatus(); render();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+/* ---------- payday reminder (calendar event, repeats monthly) ---------- */
+const ordinal = n => n + (n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th');
+function nextPayday() {
+  const t = new Date(); let y = t.getFullYear(), m = t.getMonth();
+  if (t.getDate() > S.payDay) { m++; if (m > 11) { m = 0; y++; } }
+  return '' + y + pad(m + 1) + pad(S.payDay);
+}
+const REMIND_TEXT = 'Stashday payday 💸';
+const REMIND_NOTE = 'Payday! Open Stashday, tap “Pay arrived”, then send your savings. https://stashday.vercel.app';
+function gcalLink() {
+  const d = nextPayday();
+  let tz = 'UTC'; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) {}
+  return 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
+    action: 'TEMPLATE', text: REMIND_TEXT, details: REMIND_NOTE, dates: d + 'T090000/' + d + 'T091500', ctz: tz,
+    recur: 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + S.payDay
+  }).toString();
+}
+function downloadIcs() {
+  const d = nextPayday(), stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Stashday//Payday reminder//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+    'UID:stashday-payday-' + S.payDay + '@stashday.vercel.app', 'DTSTAMP:' + stamp,
+    'DTSTART:' + d + 'T090000', 'DTEND:' + d + 'T091500', 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + S.payDay,
+    'SUMMARY:' + REMIND_TEXT, 'DESCRIPTION:' + REMIND_NOTE.replace(/,/g, '\\,'), 'URL:https://stashday.vercel.app',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + REMIND_TEXT, 'TRIGGER:PT0M', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'stashday-payday.ics';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('Open the file to add the reminder');
+}
+
 function backup() {
   const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'stashday-backup-' + todayISO() + '.json';
@@ -451,6 +482,10 @@ function vPlan() {
     <div class="row" style="gap:8px"><div class="grow"><label class="f">Price</label><input class="in" inputmode="decimal" data-f="goal.price" value="${S.goal.price || ''}" placeholder="shop price"></div><div class="grow"><label class="f">Get it by</label><input class="in" type="month" data-f="goal.targetMonth" value="${esc(S.goal.targetMonth)}"></div></div></section>`;
   h += `<section class="card"><h2>Pay</h2>
     <div class="row" style="gap:8px"><div class="grow"><label class="f">Usual monthly pay</label><input class="in" inputmode="decimal" data-f="income" value="${S.income || ''}"></div><div style="width:110px"><label class="f">Payday</label><input class="in" type="number" min="1" max="28" data-f="payDay" value="${S.payDay}"></div></div></section>`;
+  h += `<section class="card"><h2>Payday reminder</h2><div class="small muted">Puts a repeating event in your calendar on the ${ordinal(S.payDay)} of every month at 9 AM, so you remember to tap “Pay arrived” and send your savings.</div>
+    <div class="btns"><a class="btn primary" href="${esc(gcalLink())}" target="_blank" rel="noopener" style="text-decoration:none">Add to Google Calendar</a></div>
+    <div class="btns" style="margin-top:8px"><button class="btn" data-act="ics">Apple / other calendar (.ics)</button></div>
+    <div class="small muted" style="margin-top:8px">If you change your payday, add the reminder again and delete the old one.</div></section>`;
   h += `<section class="card"><h2>Big one-off costs</h2><div class="small muted">Things paid out of savings, like a trip. They’re included in the forecast.</div>`;
   S.big.forEach(b => {
     const sp = bigSpent(b.id);
@@ -646,6 +681,7 @@ document.addEventListener('click', e => {
     }
     case 'addBig': { S.big.push({ id: uid(), name: '', amount: 0, month: addMonths(cur, 1) }); save(); render(); const ins = document.querySelectorAll('.planrow input[data-k="name"]'); const l = ins[ins.length - 1]; if (l) l.focus(); return; }
     case 'backup': return backup();
+    case 'ics': return downloadIcs();
     case 'signIn': return window.Sync && Sync.signIn();
     case 'signOut': return window.Sync && Sync.signOut();
     case 'deleteCloud': return openSheet(`<h3>Delete your cloud copy?</h3><div class="muted small" style="margin-top:4px">Removes your Stashday data from your Google account and signs you out. This device keeps its own copy. Can’t be undone.</div><div class="btns"><button class="btn" data-act="close">Cancel</button><button class="btn primary" style="background:var(--bad);border-color:var(--bad)" data-act="confirmDeleteCloud">Delete</button></div>`);
