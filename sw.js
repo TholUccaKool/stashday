@@ -1,6 +1,6 @@
 // Stashday service worker: keeps the app working offline.
 // Serves from cache right away, then refreshes the cache in the background.
-const CACHE = 'stashday-v3';
+const CACHE = 'stashday-v4';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/privacy.html'];
 
 self.addEventListener('install', e => {
