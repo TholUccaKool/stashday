@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.tholucca.stashday",
+    "sha256_cert_fingerprints": ["02:51:74:2F:A3:38:1E:DE:53:85:C3:23:5E:8C:9B:6C:88:E4:6D:20:A5:CA:A1:33:3B:18:EF:3D:BB:9F:FA:31"]
+  }
+}]
